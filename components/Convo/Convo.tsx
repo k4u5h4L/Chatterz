@@ -1,6 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+import { io } from "socket.io-client";
+
+import { messages as testMessages } from "@/databases/messages";
+
+const socket = io("http://localhost:8000/");
 
 export default function Convo() {
+    const [messages, setMessages] = useState(testMessages);
+
+    const [newMessage, setNewMessage] = useState<string>("");
+
+    socket.on("chat", (arg) => {
+        console.log(arg);
+        setMessages([
+            ...messages,
+            {
+                content: arg,
+                to: "my-id",
+                from: "some-id",
+                date: `${new Date()}`,
+            },
+        ]);
+    });
+
+    socket.on("connect", () => {
+        // console.log(socket.id);
+        console.log("connected");
+    });
+
+    const messageChangeHandler = (e: any) => {
+        setNewMessage(e.target.value);
+    };
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+
+        setMessages([
+            ...messages,
+            {
+                content: newMessage,
+                to: "some-id",
+                from: "my-id",
+                date: `${new Date()}`,
+            },
+        ]);
+        setNewMessage("");
+        socket.emit("chat", newMessage);
+    };
+
+    const handleKeyPress = (e: any) => {
+        if (e.key === "Enter") {
+            handleSubmit(e);
+        }
+    };
+
     return (
         <div className="main px-xl-5 px-lg-4 px-3">
             <div className="chat-body">
@@ -275,198 +328,11 @@ export default function Convo() {
                 <div className="chat-content">
                     <div className="container-xxl">
                         <ul className="list-unstyled py-4">
-                            <li className="d-flex message">
-                                <div className="mr-lg-3 me-2">
-                                    <img
-                                        className="avatar sm rounded-circle"
-                                        src="/assets/images/xs/avatar5.jpg"
-                                        alt="avatar"
-                                    />
-                                </div>
+                            {/* ################################################################################################################### */}
 
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        Jason, 7:19 PM
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            Hello, <br />
-                                            How are you?
-                                        </div>
+                            {/* ######################################################################## */}
 
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li className="d-flex message">
-                                <div className="mr-lg-3 me-2">
-                                    <img
-                                        className="avatar sm rounded-circle"
-                                        src="/assets/images/xs/avatar5.jpg"
-                                        alt="avatar"
-                                    />
-                                </div>
-
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        Jason, 7:19 PM
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            Hello, please find attachment, let
-                                            me know if any changes.
-                                            <div className="attachment">
-                                                <div className="media mt-2">
-                                                    <div className="avatar me-2">
-                                                        <div
-                                                            className="
-                                                                    avatar
-                                                                    rounded
-                                                                    no-image
-                                                                    orange
-                                                                "
-                                                        >
-                                                            <i
-                                                                className="
-                                                                        zmdi
-                                                                        zmdi-collection-pdf
-                                                                    "
-                                                            ></i>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        className="
-                                                                media-body
-                                                                overflow-hidden
-                                                            "
-                                                    >
-                                                        <h6
-                                                            className="
-                                                                    text-truncate
-                                                                    mb-0
-                                                                "
-                                                        >
-                                                            Design file.pdf
-                                                        </h6>
-                                                        <span
-                                                            className="
-                                                                    file-size
-                                                                "
-                                                        >
-                                                            2.7 mb
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li
+                            {/* <li
                                 className="
                                         d-flex
                                         message
@@ -476,810 +342,74 @@ export default function Convo() {
                                     "
                             >
                                 <small className="text-muted">Sunday</small>
-                            </li>
+                            </li> */}
+                            {/* ######################################################################## */}
 
-                            <li className="d-flex message right">
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        7:19 PM
-                                        <i
-                                            className="
-                                                    zmdi zmdi-check-all
-                                                    text-primary
-                                                "
-                                        ></i>
-                                    </span>
-                                    <div
-                                        className="
+                            {messages.map((message, index) => (
+                                <div key={index}>
+                                    {message.from == "my-id" ? (
+                                        <li className="d-flex message right">
+                                            <div className="message-body">
+                                                <span className="date-time text-muted">
+                                                    {new Date(
+                                                        message.date
+                                                    ).toLocaleString()}
+                                                </span>
+                                                <div
+                                                    className="
                                                 message-row
                                                 d-flex
                                                 align-items-center
                                                 justify-content-end
                                             "
-                                    >
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        me-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div className="dropdown-menu">
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
                                                 >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="
-                                                    message-content
-                                                    border
-                                                    p-3
-                                                "
-                                        >
-                                            It is a long established fact that a
-                                            reader will be distracted by the
-                                            readable content of a page when
-                                            looking at its layout.
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li className="d-flex message">
-                                <div className="mr-lg-3 me-2">
-                                    <img
-                                        className="avatar sm rounded-circle"
-                                        src="/assets/images/xs/avatar5.jpg"
-                                        alt="avatar"
-                                    />
-                                </div>
-
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        Jason, 7:19 PM
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            Okay, All the Lorem Ipsum generators
-                                            on the Internet
-                                        </div>
-
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li className="d-flex message right">
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        7:19 PM
-                                        <i
-                                            className="
-                                                    zmdi zmdi-check-all
-                                                    text-primary
-                                                "
-                                        ></i>
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                                justify-content-end
-                                            "
-                                    >
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        me-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div className="dropdown-menu">
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="
-                                                    message-content
-                                                    border
-                                                    p-3
-                                                "
-                                        >
-                                            Hello, David
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                                justify-content-end
-                                            "
-                                    >
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        me-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div className="dropdown-menu">
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="
-                                                    message-content
-                                                    border
-                                                    p-3
-                                                "
-                                        >
-                                            We have send some project shot,
-                                            please review
-                                            <div
-                                                className="
-                                                        attachment
-                                                        right-file
-                                                    "
-                                            >
-                                                <img
-                                                    className="rounded mt-1"
-                                                    src="/assets/images/image-file/one-page-work-1.jpg"
-                                                    alt=""
-                                                />
-                                                <img
-                                                    className="rounded mt-1"
-                                                    src="/assets/images/image-file/one-page-work-2.jpg"
-                                                    alt=""
-                                                />
-                                                <img
-                                                    className="rounded mt-1"
-                                                    src="/assets/images/image-file/one-page-work-3.jpg"
-                                                    alt=""
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li className="d-flex message">
-                                <div className="mr-lg-3 me-2">
-                                    <img
-                                        className="avatar sm rounded-circle"
-                                        src="/assets/images/xs/avatar5.jpg"
-                                        alt="avatar"
-                                    />
-                                </div>
-
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        Jason, 7:19 PM
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            Okay,
-                                        </div>
-
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            Contrary to popular belief, Lorem
-                                            Ipsum is not simply random text. It
-                                            has roots in a piece of
-                                            classNameical Latin literature from
-                                            45 BC, making it over 2000 years
-                                            old.
-                                        </div>
-
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            <div className="attachment">
-                                                <div className="media mt-2">
-                                                    <div className="avatar me-2">
-                                                        <div
-                                                            className="
-                                                                    avatar
-                                                                    rounded
-                                                                    no-image
-                                                                    cyan
-                                                                "
-                                                        >
-                                                            <i
-                                                                className="
-                                                                        zmdi
-                                                                        zmdi-file
-                                                                    "
-                                                            ></i>
-                                                        </div>
-                                                    </div>
                                                     <div
                                                         className="
-                                                                media-body
-                                                                overflow-hidden
-                                                            "
+                                                    message-content
+                                                    border
+                                                    p-3
+                                                "
                                                     >
-                                                        <h6
-                                                            className="
-                                                                    text-truncate
-                                                                    mb-0
-                                                                "
-                                                        >
-                                                            Design file.psd
-                                                        </h6>
-                                                        <span
-                                                            className="
-                                                                    file-size
-                                                                "
-                                                        >
-                                                            22.5 mb
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="media mt-2">
-                                                    <div className="avatar me-2">
-                                                        <div
-                                                            className="
-                                                                    avatar
-                                                                    rounded
-                                                                    no-image
-                                                                    green
-                                                                "
-                                                        >
-                                                            <i
-                                                                className="
-                                                                        zmdi
-                                                                        zmdi-file-text
-                                                                    "
-                                                            ></i>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        className="
-                                                                media-body
-                                                                overflow-hidden
-                                                            "
-                                                    >
-                                                        <h6
-                                                            className="
-                                                                    text-truncate
-                                                                    mb-0
-                                                                "
-                                                        >
-                                                            Project detail.doc
-                                                        </h6>
-                                                        <span
-                                                            className="
-                                                                    file-size
-                                                                "
-                                                        >
-                                                            2.8 mb
-                                                        </span>
+                                                        {message.content}
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        ms-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div
-                                                className="
-                                                        dropdown-menu
-                                                        dropdown-menu-right
-                                                    "
-                                            >
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
+                                        </li>
+                                    ) : (
+                                        <li className="d-flex message">
+                                            <div className="mr-lg-3 me-2">
+                                                <img
+                                                    className="avatar sm rounded-circle"
+                                                    src="/assets/images/xs/avatar5.jpg"
+                                                    alt="avatar"
+                                                />
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
 
-                            <li
-                                className="
-                                        d-flex
-                                        message
-                                        divider
-                                        mt-xl-5 mt-md-3
-                                        mb-xl-5 mb-md-3
-                                    "
-                            >
-                                <small className="text-muted">Today</small>
-                            </li>
-
-                            <li className="d-flex message right">
-                                <div className="message-body">
-                                    <span className="date-time text-muted">
-                                        7:19 PM
-                                        <i
-                                            className="
-                                                    zmdi zmdi-check-all
-                                                    text-primary
-                                                "
-                                        ></i>
-                                    </span>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                                justify-content-end
-                                            "
-                                    >
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        me-1
-                                                        p-2
-                                                        text-muted
-                                                    "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
+                                            <div className="message-body">
+                                                <span className="date-time text-muted">
+                                                    {new Date(
+                                                        message.date
+                                                    ).toLocaleString()}
+                                                </span>
+                                                <div
                                                     className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div className="dropdown-menu">
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="
-                                                    message-content
-                                                    border
-                                                    p-3
-                                                "
-                                        >
-                                            If you are going to use a passage of
-                                            Lorem Ipsum, you need to be sure
-                                            there isn&apos;t anything
-                                            embarrassing hidden in the middle of
-                                            text.
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                                justify-content-end
-                                            "
-                                    >
-                                        <div className="dropdown">
-                                            <a
-                                                className="
-                                                        text-muted
-                                                        me-1
-                                                        p-2
-                                                        text-muted
+                                                        message-row
+                                                        d-flex
+                                                        align-items-center
                                                     "
-                                                href="#"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <i
-                                                    className="
-                                                            zmdi zmdi-more-vert
-                                                        "
-                                                ></i>
-                                            </a>
-                                            <div className="dropdown-menu">
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
                                                 >
-                                                    Edit
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Share
-                                                </a>
-                                                <a
-                                                    className="dropdown-item"
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="
-                                                    message-content
-                                                    border
-                                                    p-3
-                                                "
-                                        >
-                                            <div
-                                                className="
-                                                        attachment
-                                                        right-file
-                                                    "
-                                            >
-                                                <div className="media mt-2">
-                                                    <div className="avatar ms-2">
-                                                        <div
-                                                            className="
-                                                                    avatar
-                                                                    rounded
-                                                                    no-image
-                                                                    red
-                                                                "
-                                                        >
-                                                            <i
-                                                                className="
-                                                                        zmdi
-                                                                        zmdi-videocam
-                                                                    "
-                                                            ></i>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        className="
-                                                                media-body
-                                                                overflow-hidden
-                                                            "
-                                                    >
-                                                        <h6
-                                                            className="
-                                                                    text-truncate
-                                                                    mb-0
-                                                                "
-                                                        >
-                                                            Animation logo.aep
-                                                        </h6>
-                                                        <span
-                                                            className="
-                                                                    file-size
-                                                                "
-                                                        >
-                                                            47.2 mb
-                                                        </span>
+                                                    <div className="message-content p-3">
+                                                        {message.content}
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </li>
+                                    )}
                                 </div>
-                            </li>
+                            ))}
+                            {/* ######################################################################## */}
 
-                            <li className="d-flex message">
-                                <div className="mr-lg-3 me-2">
-                                    <img
-                                        className="avatar sm rounded-circle"
-                                        src="/assets/images/xs/avatar5.jpg"
-                                        alt="avatar"
-                                    />
-                                </div>
-
-                                <div className="message-body">
-                                    <div
-                                        className="
-                                                message-row
-                                                d-flex
-                                                align-items-center
-                                            "
-                                    >
-                                        <div className="message-content p-3">
-                                            <div className="wave">
-                                                <span className="dot"></span>
-                                                <span className="dot"></span>
-                                                <span className="dot"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            {/* Paste the extra stuff here */}
                         </ul>
                     </div>
                 </div>
@@ -1288,14 +418,20 @@ export default function Convo() {
                     <div className="container-xxl">
                         <div className="row">
                             <div className="col-12">
-                                <div className="input-group align-items-center">
-                                    <input
-                                        type="text"
-                                        className="form-control border-0 pl-0"
-                                        placeholder="Type your message..."
-                                    />
+                                <form onSubmit={(e) => handleSubmit(e)}>
+                                    <div className="input-group align-items-center">
+                                        <textarea
+                                            // type="text"
+                                            onChange={(e) =>
+                                                messageChangeHandler(e)
+                                            }
+                                            className="form-control border-0 pl-0"
+                                            placeholder="Type your message..."
+                                            value={newMessage}
+                                            onKeyPress={handleKeyPress}
+                                        ></textarea>
 
-                                    <div
+                                        {/* <div
                                         className="
                                                 input-group-append
                                                 d-none d-sm-block
@@ -1324,8 +460,8 @@ export default function Convo() {
                                                 ></i>
                                             </button>
                                         </span>
-                                    </div>
-                                    <div className="input-group-append">
+                                    </div> */}
+                                        {/* <div className="input-group-append">
                                         <span
                                             className="
                                                     input-group-text
@@ -1349,8 +485,8 @@ export default function Convo() {
                                                 ></i>
                                             </button>
                                         </span>
-                                    </div>
-                                    <div className="input-group-append">
+                                    </div> */}
+                                        {/* <div className="input-group-append">
                                         <span
                                             className="
                                                     input-group-text
@@ -1374,38 +510,39 @@ export default function Convo() {
                                                 ></i>
                                             </button>
                                         </span>
-                                    </div>
+                                    </div> */}
 
-                                    <div className="input-group-append">
-                                        <span
-                                            className="
+                                        <div className="input-group-append">
+                                            <span
+                                                className="
                                                     input-group-text
                                                     border-0
                                                     pr-0
                                                 "
-                                        >
-                                            <button
-                                                type="submit"
-                                                className="btn btn-primary"
                                             >
-                                                <span
-                                                    className="
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                >
+                                                    <span
+                                                        className="
                                                             d-none
                                                             d-md-inline-block
                                                             me-2
                                                         "
-                                                >
-                                                    Send
-                                                </span>
-                                                <i
-                                                    className="
+                                                    >
+                                                        Send
+                                                    </span>
+                                                    <i
+                                                        className="
                                                             zmdi zmdi-mail-send
                                                         "
-                                                ></i>
-                                            </button>
-                                        </span>
+                                                    ></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -2241,3 +1378,847 @@ export default function Convo() {
         </div>
     );
 }
+
+/* <li className="d-flex message">
+                                <div className="mr-lg-3 me-2">
+                                    <img
+                                        className="avatar sm rounded-circle"
+                                        src="/assets/images/xs/avatar5.jpg"
+                                        alt="avatar"
+                                    />
+                                </div>
+
+                                <div className="message-body">
+                                    <span className="date-time text-muted">
+                                        Jason, 7:19 PM
+                                    </span>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            Hello, please find attachment, let
+                                            me know if any changes.
+                                            <div className="attachment">
+                                                <div className="media mt-2">
+                                                    <div className="avatar me-2">
+                                                        <div
+                                                            className="
+                                                                    avatar
+                                                                    rounded
+                                                                    no-image
+                                                                    orange
+                                                                "
+                                                        >
+                                                            <i
+                                                                className="
+                                                                        zmdi
+                                                                        zmdi-collection-pdf
+                                                                    "
+                                                            ></i>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className="
+                                                                media-body
+                                                                overflow-hidden
+                                                            "
+                                                    >
+                                                        <h6
+                                                            className="
+                                                                    text-truncate
+                                                                    mb-0
+                                                                "
+                                                        >
+                                                            Design file.pdf
+                                                        </h6>
+                                                        <span
+                                                            className="
+                                                                    file-size
+                                                                "
+                                                        >
+                                                            2.7 mb
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div
+                                                className="
+                                                        dropdown-menu
+                                                        dropdown-menu-right
+                                                    "
+                                            >
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li> */
+
+/* <li className="d-flex message">
+                                <div className="mr-lg-3 me-2">
+                                    <img
+                                        className="avatar sm rounded-circle"
+                                        src="/assets/images/xs/avatar5.jpg"
+                                        alt="avatar"
+                                    />
+                                </div>
+
+                                <div className="message-body">
+                                    <span className="date-time text-muted">
+                                        Jason, 7:19 PM
+                                    </span>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            Okay, All the Lorem Ipsum generators
+                                            on the Internet
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div
+                                                className="
+                                                        dropdown-menu
+                                                        dropdown-menu-right
+                                                    "
+                                            >
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li className="d-flex message right">
+                                <div className="message-body">
+                                    <span className="date-time text-muted">
+                                        7:19 PM
+                                        <i
+                                            className="
+                                                    zmdi zmdi-check-all
+                                                    text-primary
+                                                "
+                                        ></i>
+                                    </span>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                                justify-content-end
+                                            "
+                                    >
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        me-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div className="dropdown-menu">
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="
+                                                    message-content
+                                                    border
+                                                    p-3
+                                                "
+                                        >
+                                            Hello, David
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                                justify-content-end
+                                            "
+                                    >
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        me-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div className="dropdown-menu">
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="
+                                                    message-content
+                                                    border
+                                                    p-3
+                                                "
+                                        >
+                                            We have send some project shot,
+                                            please review
+                                            <div
+                                                className="
+                                                        attachment
+                                                        right-file
+                                                    "
+                                            >
+                                                <img
+                                                    className="rounded mt-1"
+                                                    src="/assets/images/image-file/one-page-work-1.jpg"
+                                                    alt=""
+                                                />
+                                                <img
+                                                    className="rounded mt-1"
+                                                    src="/assets/images/image-file/one-page-work-2.jpg"
+                                                    alt=""
+                                                />
+                                                <img
+                                                    className="rounded mt-1"
+                                                    src="/assets/images/image-file/one-page-work-3.jpg"
+                                                    alt=""
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li className="d-flex message">
+                                <div className="mr-lg-3 me-2">
+                                    <img
+                                        className="avatar sm rounded-circle"
+                                        src="/assets/images/xs/avatar5.jpg"
+                                        alt="avatar"
+                                    />
+                                </div>
+
+                                <div className="message-body">
+                                    <span className="date-time text-muted">
+                                        Jason, 7:19 PM
+                                    </span>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            Okay,
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div
+                                                className="
+                                                        dropdown-menu
+                                                        dropdown-menu-right
+                                                    "
+                                            >
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            Contrary to popular belief, Lorem
+                                            Ipsum is not simply random text. It
+                                            has roots in a piece of
+                                            classNameical Latin literature from
+                                            45 BC, making it over 2000 years
+                                            old.
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div
+                                                className="
+                                                        dropdown-menu
+                                                        dropdown-menu-right
+                                                    "
+                                            >
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            <div className="attachment">
+                                                <div className="media mt-2">
+                                                    <div className="avatar me-2">
+                                                        <div
+                                                            className="
+                                                                    avatar
+                                                                    rounded
+                                                                    no-image
+                                                                    cyan
+                                                                "
+                                                        >
+                                                            <i
+                                                                className="
+                                                                        zmdi
+                                                                        zmdi-file
+                                                                    "
+                                                            ></i>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className="
+                                                                media-body
+                                                                overflow-hidden
+                                                            "
+                                                    >
+                                                        <h6
+                                                            className="
+                                                                    text-truncate
+                                                                    mb-0
+                                                                "
+                                                        >
+                                                            Design file.psd
+                                                        </h6>
+                                                        <span
+                                                            className="
+                                                                    file-size
+                                                                "
+                                                        >
+                                                            22.5 mb
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="media mt-2">
+                                                    <div className="avatar me-2">
+                                                        <div
+                                                            className="
+                                                                    avatar
+                                                                    rounded
+                                                                    no-image
+                                                                    green
+                                                                "
+                                                        >
+                                                            <i
+                                                                className="
+                                                                        zmdi
+                                                                        zmdi-file-text
+                                                                    "
+                                                            ></i>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className="
+                                                                media-body
+                                                                overflow-hidden
+                                                            "
+                                                    >
+                                                        <h6
+                                                            className="
+                                                                    text-truncate
+                                                                    mb-0
+                                                                "
+                                                        >
+                                                            Project detail.doc
+                                                        </h6>
+                                                        <span
+                                                            className="
+                                                                    file-size
+                                                                "
+                                                        >
+                                                            2.8 mb
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div
+                                                className="
+                                                        dropdown-menu
+                                                        dropdown-menu-right
+                                                    "
+                                            >
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li
+                                className="
+                                        d-flex
+                                        message
+                                        divider
+                                        mt-xl-5 mt-md-3
+                                        mb-xl-5 mb-md-3
+                                    "
+                            >
+                                <small className="text-muted">Today</small>
+                            </li>
+
+                            <li className="d-flex message right">
+                                <div className="message-body">
+                                    <span className="date-time text-muted">
+                                        7:19 PM
+                                        <i
+                                            className="
+                                                    zmdi zmdi-check-all
+                                                    text-primary
+                                                "
+                                        ></i>
+                                    </span>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                                justify-content-end
+                                            "
+                                    >
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        me-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div className="dropdown-menu">
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="
+                                                    message-content
+                                                    border
+                                                    p-3
+                                                "
+                                        >
+                                            If you are going to use a passage of
+                                            Lorem Ipsum, you need to be sure
+                                            there isn&apos;t anything
+                                            embarrassing hidden in the middle of
+                                            text.
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                                justify-content-end
+                                            "
+                                    >
+                                        <div className="dropdown">
+                                            <a
+                                                className="
+                                                        text-muted
+                                                        me-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                href="#"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <i
+                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                ></i>
+                                            </a>
+                                            <div className="dropdown-menu">
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Edit
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Share
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                >
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="
+                                                    message-content
+                                                    border
+                                                    p-3
+                                                "
+                                        >
+                                            <div
+                                                className="
+                                                        attachment
+                                                        right-file
+                                                    "
+                                            >
+                                                <div className="media mt-2">
+                                                    <div className="avatar ms-2">
+                                                        <div
+                                                            className="
+                                                                    avatar
+                                                                    rounded
+                                                                    no-image
+                                                                    red
+                                                                "
+                                                        >
+                                                            <i
+                                                                className="
+                                                                        zmdi
+                                                                        zmdi-videocam
+                                                                    "
+                                                            ></i>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className="
+                                                                media-body
+                                                                overflow-hidden
+                                                            "
+                                                    >
+                                                        <h6
+                                                            className="
+                                                                    text-truncate
+                                                                    mb-0
+                                                                "
+                                                        >
+                                                            Animation logo.aep
+                                                        </h6>
+                                                        <span
+                                                            className="
+                                                                    file-size
+                                                                "
+                                                        >
+                                                            47.2 mb
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li className="d-flex message">
+                                <div className="mr-lg-3 me-2">
+                                    <img
+                                        className="avatar sm rounded-circle"
+                                        src="/assets/images/xs/avatar5.jpg"
+                                        alt="avatar"
+                                    />
+                                </div>
+
+                                <div className="message-body">
+                                    <div
+                                        className="
+                                                message-row
+                                                d-flex
+                                                align-items-center
+                                            "
+                                    >
+                                        <div className="message-content p-3">
+                                            <div className="wave">
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li> */

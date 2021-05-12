@@ -20,6 +20,7 @@
             "@/types/*": ["@types/*"],
             "@/utils/*": ["utils/*"],
             "@/models/*": ["models/*"],
+            "@/databases/*": ["databases/*"],
             "@/helpers/*": ["helpers/*"],
             "@/graphql/*": ["graphql/*"],
             "@/node_modules/*": ["node_modules/*"]
