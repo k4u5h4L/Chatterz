@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Sidebar() {
     return (
@@ -42,7 +43,7 @@ export default function Sidebar() {
                         <div className="card-body">
                             <div className="card-user-avatar">
                                 <img
-                                    src="assets/images/user.png"
+                                    src="/assets/images/user.png"
                                     alt="avatar"
                                 />
                                 <button
@@ -356,7 +357,7 @@ export default function Sidebar() {
                                 </div>
                             </a>
                         </li>
-                        <li className="online">
+                        {/* <li className="online">
                             <div className="hover_action">
                                 <button
                                     type="button"
@@ -392,7 +393,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar5.jpg"
+                                                src="/assets/images/xs/avatar5.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -537,7 +538,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar5.jpg"
+                                                        src="/assets/images/xs/avatar5.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Sean"
@@ -548,7 +549,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar6.jpg"
+                                                        src="/assets/images/xs/avatar6.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Martin"
@@ -559,7 +560,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar1.jpg"
+                                                        src="/assets/images/xs/avatar1.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Terry"
@@ -570,7 +571,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar4.jpg"
+                                                        src="/assets/images/xs/avatar4.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Michelle"
@@ -581,8 +582,8 @@ export default function Sidebar() {
                                     </div>
                                 </div>
                             </a>
-                        </li>
-                        <li className="away">
+                        </li> */}
+                        {/* <li className="away">
                             <div className="hover_action">
                                 <button
                                     type="button"
@@ -618,7 +619,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar1.jpg"
+                                                src="/assets/images/xs/avatar1.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -663,7 +664,7 @@ export default function Sidebar() {
                                     </div>
                                 </div>
                             </a>
-                        </li>
+                        </li> */}
                         <li>
                             <div className="hover_action">
                                 <button
@@ -685,82 +686,84 @@ export default function Sidebar() {
                                     <i className="zmdi zmdi-delete"></i>
                                 </button>
                             </div>
-                            <a href="#" className="card">
-                                <div className="card-body">
-                                    <div className="media">
-                                        <div className="avatar me-3">
-                                            <span
-                                                className="
+                            <Link href="/chat/djhsuahd">
+                                <a className="card">
+                                    <div className="card-body">
+                                        <div className="media">
+                                            <div className="avatar me-3">
+                                                <span
+                                                    className="
                                                         status
                                                         rounded-circle
                                                     "
-                                            ></span>
-                                            <img
-                                                className="
+                                                ></span>
+                                                <img
+                                                    className="
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar2.jpg"
-                                                alt="avatar"
-                                            />
-                                        </div>
-                                        <div
-                                            className="
+                                                    src="/assets/images/xs/avatar2.jpg"
+                                                    alt="avatar"
+                                                />
+                                            </div>
+                                            <div
+                                                className="
                                                     media-body
                                                     overflow-hidden
                                                 "
-                                        >
-                                            <div
-                                                className="
+                                            >
+                                                <div
+                                                    className="
                                                         d-flex
                                                         align-items-center
                                                         mb-1
                                                     "
-                                            >
-                                                <h6
-                                                    className="
+                                                >
+                                                    <h6
+                                                        className="
                                                             text-truncate
                                                             mb-0
                                                             me-auto
                                                         "
-                                                >
-                                                    Elizabeth Martin
-                                                    <span
-                                                        className="
+                                                    >
+                                                        Elizabeth Martin
+                                                        <span
+                                                            className="
                                                                 badge badge-info
                                                             "
-                                                    >
-                                                        4
-                                                    </span>
-                                                </h6>
-                                                <p
-                                                    className="
+                                                        >
+                                                            4
+                                                        </span>
+                                                    </h6>
+                                                    <p
+                                                        className="
                                                             small
                                                             text-muted
                                                             text-nowrap
                                                             ms-4
                                                             mb-0
                                                         "
-                                                >
-                                                    11:08 am
-                                                </p>
-                                            </div>
-                                            <div className="text-truncate">
-                                                <i
-                                                    className="
+                                                    >
+                                                        11:08 am
+                                                    </p>
+                                                </div>
+                                                <div className="text-truncate">
+                                                    <i
+                                                        className="
                                                             zmdi zmdi-file-text
                                                             me-1
                                                         "
-                                                ></i>
-                                                It is a long established fact
-                                                that a reader w...
+                                                    ></i>
+                                                    It is a long established
+                                                    fact that a reader w...
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </Link>
                         </li>
-                        <li className="online">
+                        {/* <li className="online">
                             <div className="hover_action">
                                 <button
                                     type="button"
@@ -796,7 +799,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar3.jpg"
+                                                src="/assets/images/xs/avatar3.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -882,7 +885,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar4.jpg"
+                                                src="/assets/images/xs/avatar4.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -971,7 +974,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar6.jpg"
+                                                src="/assets/images/xs/avatar6.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1200,7 +1203,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar7.jpg"
+                                                        src="/assets/images/xs/avatar7.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Sean"
@@ -1211,7 +1214,7 @@ export default function Sidebar() {
                                                                 xs
                                                                 rounded
                                                             "
-                                                        src="assets/images/xs/avatar8.jpg"
+                                                        src="/assets/images/xs/avatar8.jpg"
                                                         data-toggle="tooltip"
                                                         data-placement="top"
                                                         title="Martin"
@@ -1259,7 +1262,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar6.jpg"
+                                                src="/assets/images/xs/avatar6.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1395,7 +1398,7 @@ export default function Sidebar() {
                                     </div>
                                 </div>
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
 
@@ -1504,7 +1507,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar10.jpg"
+                                                src="/assets/images/xs/avatar10.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1576,7 +1579,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar9.jpg"
+                                                src="/assets/images/xs/avatar9.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1648,7 +1651,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar8.jpg"
+                                                src="/assets/images/xs/avatar8.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1720,7 +1723,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar1.jpg"
+                                                src="/assets/images/xs/avatar1.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1792,7 +1795,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar8.jpg"
+                                                src="/assets/images/xs/avatar8.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -1864,7 +1867,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar1.jpg"
+                                                src="/assets/images/xs/avatar1.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2019,7 +2022,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar1.jpg"
+                                                src="/assets/images/xs/avatar1.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2084,7 +2087,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar3.jpg"
+                                                src="/assets/images/xs/avatar3.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2161,7 +2164,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar4.jpg"
+                                                src="/assets/images/xs/avatar4.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2226,7 +2229,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar5.jpg"
+                                                src="/assets/images/xs/avatar5.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2291,7 +2294,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar6.jpg"
+                                                src="/assets/images/xs/avatar6.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2368,7 +2371,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar4.jpg"
+                                                src="/assets/images/xs/avatar4.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2445,7 +2448,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar8.jpg"
+                                                src="/assets/images/xs/avatar8.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2510,7 +2513,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar8.jpg"
+                                                src="/assets/images/xs/avatar8.jpg"
                                                 alt="avatar"
                                             />
                                         </div>
@@ -2587,7 +2590,7 @@ export default function Sidebar() {
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                src="assets/images/xs/avatar9.jpg"
+                                                src="/assets/images/xs/avatar9.jpg"
                                                 alt="avatar"
                                             />
                                         </div>

@@ -1,6 +1,5 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
-
 export default class MyDocument extends Document {
     render() {
         return (
@@ -15,7 +14,7 @@ export default class MyDocument extends Document {
                         href="/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css"
                     />
 
-                    <link rel="stylesheet" href="assets/css/style.min.css" />
+                    <link rel="stylesheet" href="/assets/css/style.min.css" />
                     <link rel="icon" type="image/png" href="/icon.png" />
                 </Head>
                 <body>

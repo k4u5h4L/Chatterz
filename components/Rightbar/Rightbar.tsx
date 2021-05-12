@@ -321,7 +321,7 @@ export default function Rightbar() {
                                                 "
                                         >
                                             <img
-                                                src="assets/images/xs/avatar6.jpg"
+                                                src="/assets/images/xs/avatar6.jpg"
                                                 data-toggle="tooltip"
                                                 title=""
                                                 alt="Avatar"

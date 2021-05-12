@@ -129,7 +129,7 @@ export default function Navbar() {
                     role="tab"
                 >
                     <img
-                        src="assets/images/user.png"
+                        src="/assets/images/user.png"
                         className="avatar sm rounded-circle"
                         alt="user avatar"
                     />
