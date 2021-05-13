@@ -296,7 +296,7 @@ export default function Sidebar() {
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        {/* <li>
                             <a href="bot-chat.html" className="card">
                                 <div className="card-body">
                                     <div className="media">
@@ -356,7 +356,7 @@ export default function Sidebar() {
                                     </div>
                                 </div>
                             </a>
-                        </li>
+                        </li> */}
                         {/* <li className="online">
                             <div className="hover_action">
                                 <button

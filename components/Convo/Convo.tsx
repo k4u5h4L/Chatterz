@@ -1,24 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
-import { io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 
 import { messages as testMessages } from "@/databases/messages";
-
-const socket = io("http://localhost:8000/");
+import { useSocket } from "@/utils/useSocket";
 
 export default function Convo() {
-    const chatSection = document.getElementById("chatSection");
-    const chatBody = document.getElementById("chatBody");
-    const [messages, setMessages] = useState(testMessages);
+    const [messages, setMessages] = useState([]);
 
     const [newMessage, setNewMessage] = useState<string>("");
+    const socket: Socket = useSocket();
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     const chatRef = useRef(null);
 
-    useEffect(() => {
-        chatRef.current.scrollIntoView({ behavior: "smooth" });
-    }, []);
-
-    socket.on("chat", (arg) => {
+    const newMessageHandler = (arg) => {
         console.log(arg);
         setMessages([
             ...messages,
@@ -30,33 +25,47 @@ export default function Convo() {
             },
         ]);
         chatRef.current.scrollIntoView({ behavior: "smooth" });
-    });
-
-    socket.on("connect", () => {
-        // console.log(socket.id);
-        console.log("connected");
-    });
-
-    const messageChangeHandler = (e: any) => {
-        setNewMessage(e.target.value);
     };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        setMessages([
-            ...messages,
-            {
-                content: newMessage,
-                to: "some-id",
-                from: "my-id",
-                date: `${new Date()}`,
-            },
-        ]);
-        setNewMessage("");
-        // chatSection.scrollTo(0, document.body.scrollHeight + 2);
+        if (socket) {
+            setMessages([
+                ...messages,
+                {
+                    content: newMessage,
+                    to: "some-id",
+                    from: "my-id",
+                    date: `${new Date()}`,
+                },
+            ]);
+
+            console.log(messages);
+
+            socket.emit("chat-message", newMessage);
+            setSubmitted(!submitted);
+            setNewMessage("");
+            chatRef.current.scrollIntoView({ behavior: "smooth" });
+            socket.off("chat-message-response");
+        }
+    };
+
+    useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" });
-        socket.emit("chat", newMessage);
+
+        if (socket) {
+            socket.on("chat-message-response", newMessageHandler);
+
+            socket.on("connect", () => {
+                console.log(socket.id);
+                console.log("connected");
+            });
+        }
+    }, [socket, submitted]);
+
+    const messageChangeHandler = (e: any) => {
+        setNewMessage(e.target.value);
     };
 
     const handleKeyPress = (e: any) => {
@@ -357,14 +366,7 @@ export default function Convo() {
                             {/* ######################################################################## */}
 
                             {messages.map((message, index) => (
-                                <div
-                                    key={index}
-                                    ref={
-                                        index == messages.length - 1
-                                            ? chatRef
-                                            : null
-                                    }
-                                >
+                                <div key={index}>
                                     {message.from == "my-id" ? (
                                         <li className="d-flex message right">
                                             <div className="message-body">
@@ -429,6 +431,7 @@ export default function Convo() {
 
                             {/* Paste the extra stuff here */}
                         </ul>
+                        <div ref={chatRef}></div>
                     </div>
                 </div>
 

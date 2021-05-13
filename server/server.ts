@@ -23,9 +23,9 @@ app.get("/api", (req: Request, res: Response) => {
 
 io.on("connection", (socket: Socket) => {
     console.log("connected");
-    socket.on("chat", (arg) => {
+    socket.on("chat-message", (arg) => {
         console.log(arg);
-        socket.emit("chat", "I see you have connected");
+        socket.emit("chat-message-response", `server: ${arg}`);
     });
 });
 
