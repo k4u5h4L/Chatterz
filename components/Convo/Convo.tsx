@@ -13,6 +13,11 @@ export default function Convo() {
 
     const chatRef = useRef(null);
 
+    // socket.on("connect", () => {
+    //     console.log(socket.id);
+    //     console.log("connected");
+    // });
+
     const newMessageHandler = (arg) => {
         console.log(arg);
         setMessages([
@@ -56,11 +61,6 @@ export default function Convo() {
 
         if (socket) {
             socket.on("chat-message-response", newMessageHandler);
-
-            socket.on("connect", () => {
-                console.log(socket.id);
-                console.log("connected");
-            });
         }
     }, [socket, submitted]);
 
