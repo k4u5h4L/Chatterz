@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 
 import { messages as testMessages } from "@/databases/messages";
@@ -6,9 +6,17 @@ import { messages as testMessages } from "@/databases/messages";
 const socket = io("http://localhost:8000/");
 
 export default function Convo() {
+    const chatSection = document.getElementById("chatSection");
+    const chatBody = document.getElementById("chatBody");
     const [messages, setMessages] = useState(testMessages);
 
     const [newMessage, setNewMessage] = useState<string>("");
+
+    const chatRef = useRef(null);
+
+    useEffect(() => {
+        chatRef.current.scrollIntoView({ behavior: "smooth" });
+    }, []);
 
     socket.on("chat", (arg) => {
         console.log(arg);
@@ -21,6 +29,7 @@ export default function Convo() {
                 date: `${new Date()}`,
             },
         ]);
+        chatRef.current.scrollIntoView({ behavior: "smooth" });
     });
 
     socket.on("connect", () => {
@@ -45,6 +54,8 @@ export default function Convo() {
             },
         ]);
         setNewMessage("");
+        // chatSection.scrollTo(0, document.body.scrollHeight + 2);
+        chatRef.current.scrollIntoView({ behavior: "smooth" });
         socket.emit("chat", newMessage);
     };
 
@@ -56,7 +67,7 @@ export default function Convo() {
 
     return (
         <div className="main px-xl-5 px-lg-4 px-3">
-            <div className="chat-body">
+            <div className="chat-body" id="chatBody">
                 <div className="chat-header border-bottom py-xl-4 py-md-3 py-2">
                     <div className="container-xxl">
                         <div className="row align-items-center">
@@ -325,7 +336,7 @@ export default function Convo() {
                     </div>
                 </div>
 
-                <div className="chat-content">
+                <div className="chat-content" id="chatSection">
                     <div className="container-xxl">
                         <ul className="list-unstyled py-4">
                             {/* ################################################################################################################### */}
@@ -346,7 +357,14 @@ export default function Convo() {
                             {/* ######################################################################## */}
 
                             {messages.map((message, index) => (
-                                <div key={index}>
+                                <div
+                                    key={index}
+                                    ref={
+                                        index == messages.length - 1
+                                            ? chatRef
+                                            : null
+                                    }
+                                >
                                     {message.from == "my-id" ? (
                                         <li className="d-flex message right">
                                             <div className="message-body">
@@ -420,16 +438,16 @@ export default function Convo() {
                             <div className="col-12">
                                 <form onSubmit={(e) => handleSubmit(e)}>
                                     <div className="input-group align-items-center">
-                                        <textarea
-                                            // type="text"
+                                        <input
+                                            type="text"
                                             onChange={(e) =>
                                                 messageChangeHandler(e)
                                             }
                                             className="form-control border-0 pl-0"
                                             placeholder="Type your message..."
                                             value={newMessage}
-                                            onKeyPress={handleKeyPress}
-                                        ></textarea>
+                                            // onKeyPress={handleKeyPress}
+                                        />
 
                                         {/* <div
                                         className="
