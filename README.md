@@ -39,6 +39,20 @@
 
 -   MongoDB installed and the daemon running at `localhost:27017`.
 
+## Features:
+
+-   [ ] Real time one-to-one messaging
+
+-   [x] Integrated calendar inside the messaging app
+
+-   [x] Integrated notes saving in the chats
+
+-   [x] Integrated to-do list in the chats
+
+-   [ ] On-to-one or group Video calling
+
+-   [ ] End-to-end encryption
+
 ## To run:
 
 -   Clone and cd into the repo.
