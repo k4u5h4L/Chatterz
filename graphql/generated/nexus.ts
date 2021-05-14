@@ -34,6 +34,7 @@ export interface NexusGenObjects {
     id?: string | null; // String
     to?: string | null; // String
   }
+  Mutation: {};
   Note: { // root type
     email?: string | null; // String
     list?: Array<NexusGenRootTypes['NoteDescription'] | null> | null; // [NoteDescription]
@@ -69,6 +70,10 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     to: string | null; // String
   }
+  Mutation: { // field return type
+    createNote: NexusGenRootTypes['Note'] | null; // Note
+    deleteNote: NexusGenRootTypes['Note'] | null; // Note
+  }
   Note: { // field return type
     email: string | null; // String
     list: Array<NexusGenRootTypes['NoteDescription'] | null> | null; // [NoteDescription]
@@ -77,7 +82,8 @@ export interface NexusGenFieldTypes {
     desc: string | null; // String
   }
   Query: { // field return type
-    Message: Array<NexusGenRootTypes['Message'] | null> | null; // [Message]
+    NoteByEmail: NexusGenRootTypes['Note'] | null; // Note
+    TodoByEmail: NexusGenRootTypes['Todo'] | null; // Todo
   }
   Todo: { // field return type
     email: string | null; // String
@@ -96,6 +102,10 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     to: 'String'
   }
+  Mutation: { // field return type name
+    createNote: 'Note'
+    deleteNote: 'Note'
+  }
   Note: { // field return type name
     email: 'String'
     list: 'NoteDescription'
@@ -104,7 +114,8 @@ export interface NexusGenFieldTypeNames {
     desc: 'String'
   }
   Query: { // field return type name
-    Message: 'Message'
+    NoteByEmail: 'Note'
+    TodoByEmail: 'Todo'
   }
   Todo: { // field return type name
     email: 'String'
@@ -117,6 +128,24 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createNote: { // args
+      desc: string; // String!
+      email: string; // String!
+    }
+    deleteNote: { // args
+      desc: string; // String!
+      email: string; // String!
+    }
+  }
+  Query: {
+    NoteByEmail: { // args
+      email?: string | null; // ID
+    }
+    TodoByEmail: { // args
+      email?: string | null; // ID
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

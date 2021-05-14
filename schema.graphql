@@ -9,6 +9,11 @@ type Message {
   to: String
 }
 
+type Mutation {
+  createNote(desc: String!, email: String!): Note
+  deleteNote(desc: String!, email: String!): Note
+}
+
 type Note {
   email: String
   list: [NoteDescription]
@@ -19,8 +24,11 @@ type NoteDescription {
 }
 
 type Query {
-  """All messages sent till now"""
-  Message: [Message]
+  """Get the notes by its corresponding email of the user"""
+  NoteByEmail(email: ID): Note
+
+  """Get the Todo tasks by its corresponding email of the user"""
+  TodoByEmail(email: ID): Todo
 }
 
 type Todo {
