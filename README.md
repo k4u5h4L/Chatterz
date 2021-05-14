@@ -1,7 +1,7 @@
-<h1 align="center">QuikPantry</h1></br>
+<h1 align="center">Chatterz</h1></br>
 
 <p align="center">
-:shopping_cart:  A JAM stack PWA, grocery shop web app built with React, TypeScript, JWT, Next.js and MongoDB. :apple:
+:incoming_envelope:  A JAM stack PWA, real-time messaging web app built with GraphQL, Nexus schema, Apollo, React, TypeScript, Next.js, JWT and MongoDB. :mailbox_with_mail:
 </p>
 <br>
 
@@ -16,25 +16,35 @@
 
 <br>
 <p align="center">
-<img width="460px" src="assets/logo.png" alt="quikpantry"></img>
+<img width="460px" src="assets/logo.png" alt="chatterz"></img>
 </p><br>
 
 ## Technologies used:
 
 -   React as the UI library.
 
--   Next.js for the as the server.
+-   Next.js as the React framework for auth and stuff.
 
--   MOngoDB, and Mongoose as the ODM.
+-   GraphQL as the API language.
+
+-   Socket.io for real time communication
+
+-   MongoDB, and Mongoose as the ODM.
 
 -   NextAuth as the authentication backend with passwordless logins.
+
+## Prerequisites:
+
+-   Node.js and yarn installed.
+
+-   MongoDB installed and the daemon running at `localhost:27017`.
 
 ## To run:
 
 -   Clone and cd into the repo.
 
 ```
-git clone https://github.com/k4u5h4L/QuikPantry.git && cd QuikPantry
+git clone https://github.com/k4u5h4L/Chatterz.git && cd Chatterz
 ```
 
 -   Install the dependencies
@@ -43,16 +53,19 @@ git clone https://github.com/k4u5h4L/QuikPantry.git && cd QuikPantry
 yarn install
 ```
 
--   Create a new file called `.env.local` and fill in variables and keys from different providers.
+-   Create a new file called `.env.local` and fill in variables and keys from different providers from the `.env.example` file.
 
-<!-- -   Run migrations for the DB (if not present).
+-   Run the development server for the Express backend server by running these two commands in separate terminals in the `server/` directory.
 
+```bash
+# this will compile the server TS code and will watch for file changes
+yarn run watch
+
+# This will spin up the development server using the nodemon utility
+yarn run dev:server
 ```
-npx prisma migrate dev --preview-feature
-npx prisma generate
-``` -->
 
--   Now with all the API keys and media loaded, run development server.
+-   Now with all the API keys and the backend server running, run development server for the client in the root directory of this project.
 
 ```
 yarn dev
