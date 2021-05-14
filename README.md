@@ -69,7 +69,7 @@ yarn install
 
 -   Create a new file called `.env.local` and fill in variables and keys from different providers from the `.env.example` file.
 
--   Run the development server for the Express backend server by running these two commands in separate terminals in the `server/` directory.
+-   Run the development server for the Express backend server by running these two commands in separate terminals.
 
 ```bash
 # this will compile the server TS code and will watch for file changes

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Navbar() {
     return (
@@ -11,8 +12,10 @@ export default function Navbar() {
                     px-3
                 "
         >
-            <a href="index.html" title="Postman" className="brand">
-                <svg
+            <Link href="/">
+                <a title="Chatterz" className="brand">
+                    <img src="/icon.png" width={40} />
+                    {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 46 46"
                     fill="none"
@@ -114,8 +117,9 @@ export default function Navbar() {
                             fill="#4539CF"
                         />
                     </g>
-                </svg>
-            </a>
+                </svg> */}
+                </a>
+            </Link>
 
             <div
                 className="nav flex-md-column nav-pills flex-grow-1"
