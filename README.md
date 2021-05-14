@@ -33,12 +33,6 @@
 
 -   NextAuth as the authentication backend with passwordless logins.
 
-## Prerequisites:
-
--   Node.js and yarn installed.
-
--   MongoDB installed and the daemon running at `localhost:27017`.
-
 ## Features:
 
 -   [ ] Real time one-to-one messaging
@@ -52,6 +46,12 @@
 -   [ ] On-to-one or group Video calling
 
 -   [ ] End-to-end encryption
+
+## Prerequisites:
+
+-   Node.js and yarn installed.
+
+-   MongoDB installed and the daemon running at `localhost:27017`.
 
 ## To run:
 
