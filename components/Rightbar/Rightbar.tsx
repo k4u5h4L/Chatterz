@@ -1,5 +1,8 @@
 import React from "react";
 
+import Notes from "../Notes/Notes";
+import Todos from "../Todos/Todos";
+
 export default function Rightbar() {
     return (
         <div className="rightbar d-none d-md-block">
@@ -34,16 +37,16 @@ export default function Rightbar() {
                 >
                     <i className="zmdi zmdi-comment-edit"></i>
                 </a>
-                <a
+                {/* <a
                     className="nav-link mb-2 text-center rightbar-link"
                     data-toggle="pill"
                     href="#tab-github"
                 >
                     <i className="zmdi zmdi-github"></i>
-                </a>
-                <a className="nav-link mb-2 text-center" href="#">
+                </a> */}
+                {/* <a className="nav-link mb-2 text-center" href="#">
                     <i className="zmdi zmdi-plus"></i>
-                </a>
+                </a> */}
             </div>
             <div className="tab-content py-xl-4 py-3 px-xl-4 px-3">
                 <div
@@ -63,7 +66,7 @@ export default function Rightbar() {
                         <div>
                             <h6 className="mb-0 font-weight-bold">Calendar</h6>
                             <span className="text-muted">
-                                Update your profile details
+                                Don&apos;t lose track of time!
                             </span>
                         </div>
                         <div>
@@ -84,203 +87,11 @@ export default function Rightbar() {
                     </div>
                 </div>
 
-                <div className="tab-pane fade" id="tab-note" role="tabpanel">
-                    <div
-                        className="
-                                header
-                                border-bottom
-                                pb-4
-                                d-flex
-                                justify-content-between
-                            "
-                    >
-                        <div>
-                            <h6 className="mb-0 font-weight-bold">My Notes</h6>
-                            <span className="text-muted">
-                                Update your profile details
-                            </span>
-                        </div>
-                        <div>
-                            <button
-                                className="
-                                        btn btn-link
-                                        close-sidebar
-                                        text-muted
-                                    "
-                                type="button"
-                            >
-                                <i className="zmdi zmdi-close"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="body mt-4">
-                        <div className="add-note">
-                            <form>
-                                <div className="input-group mb-2">
-                                    <textarea
-                                        rows={3}
-                                        className="form-control"
-                                        placeholder="Enter a note here.."
-                                    ></textarea>
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary addnote"
-                                >
-                                    Add
-                                </button>
-                            </form>
-                            <ul className="list-unstyled mt-4">
-                                <li className="card border-0 mb-2">
-                                    <span>
-                                        It is a long established fact that a
-                                        reader will be distracted by the
-                                        readable content of a page when looking
-                                        at its layout.
-                                    </span>
-                                    <button className="btn btn-sm btn-link">
-                                        <i
-                                            className="
-                                                    zmdi zmdi-delete
-                                                    text-danger
-                                                "
-                                        ></i>
-                                    </button>
-                                </li>
-                                <li className="card border-0 mb-2">
-                                    <span>
-                                        Contrary to popular belief, Lorem Ipsum
-                                        is not simply random text.
-                                    </span>
-                                    <button className="btn btn-sm btn-link">
-                                        <i
-                                            className="
-                                                    zmdi zmdi-delete
-                                                    text-danger
-                                                "
-                                        ></i>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                <Notes />
 
-                <div className="tab-pane fade" id="tab-task" role="tabpanel">
-                    <div
-                        className="
-                                header
-                                border-bottom
-                                pb-4
-                                d-flex
-                                justify-content-between
-                            "
-                    >
-                        <div>
-                            <h6 className="mb-0 font-weight-bold">
-                                My Task List
-                            </h6>
-                            <span className="text-muted">
-                                Update your profile details
-                            </span>
-                        </div>
-                        <div>
-                            <button
-                                className="
-                                        btn btn-link
-                                        close-sidebar
-                                        text-muted
-                                    "
-                                type="button"
-                            >
-                                <i className="zmdi zmdi-close"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="body mt-4">
-                        <div className="todo-list">
-                            <ul className="list-unstyled todo-list-items">
-                                <li>
-                                    <label className="c_checkbox">
-                                        <input type="checkbox" />
-                                        <span className="checkmark"></span>
-                                        <span className="ms-2">
-                                            Update new code on github
-                                        </span>
-                                    </label>
-                                    <button
-                                        className="btn btn-sm btn-link"
-                                        type="submit"
-                                    >
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </button>
-                                </li>
-                                <li>
-                                    <label className="c_checkbox">
-                                        <input type="checkbox" />
-                                        <span className="checkmark"></span>
-                                        <span className="ms-2">
-                                            Meeting with design team and updates
-                                        </span>
-                                    </label>
-                                    <button
-                                        className="btn btn-sm btn-link"
-                                        type="submit"
-                                    >
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </button>
-                                </li>
-                                <li>
-                                    <label className="c_checkbox">
-                                        <input type="checkbox" />
-                                        <span className="checkmark"></span>
-                                        <span className="ms-2">
-                                            Send project zip file to developer
-                                        </span>
-                                    </label>
-                                    <button
-                                        className="btn btn-sm btn-link"
-                                        type="submit"
-                                    >
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </button>
-                                </li>
-                                <li>
-                                    <label className="c_checkbox">
-                                        <input type="checkbox" />
-                                        <span className="checkmark"></span>
-                                        <span className="ms-2">
-                                            Create new design psd for onepage
-                                        </span>
-                                    </label>
-                                    <button
-                                        className="btn btn-sm btn-link"
-                                        type="submit"
-                                    >
-                                        <i className="zmdi zmdi-delete"></i>
-                                    </button>
-                                </li>
-                            </ul>
-                            <form className="add-items">
-                                <div className="input-group mb-2">
-                                    <textarea
-                                        rows={3}
-                                        className="form-control"
-                                        placeholder="What do you need to do today?"
-                                    ></textarea>
-                                </div>
-                                <button
-                                    className="add btn btn-primary"
-                                    type="submit"
-                                >
-                                    Add to List
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                <Todos />
 
-                <div className="tab-pane fade" id="tab-github" role="tabpanel">
+                {/* <div className="tab-pane fade" id="tab-github" role="tabpanel">
                     <div
                         className="
                                 header
@@ -555,7 +366,7 @@ export default function Rightbar() {
                             </li>
                         </ol>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
