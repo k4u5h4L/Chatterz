@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Image from "next/image";
+
 import { useRouter } from "next/router";
 import { InfoType } from "@/types/index";
 
@@ -9,6 +11,8 @@ export default function NewUser() {
         phone: "",
         bio: "",
     });
+
+    const [loading, setLoading] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -136,6 +140,16 @@ export default function NewUser() {
                                                 }
                                             ></textarea>
                                         </div>
+
+                                        {loading ? (
+                                            <p className="d-flex justify-content-center">
+                                                <Image
+                                                    src="/loading.gif"
+                                                    width={50}
+                                                    height={50}
+                                                />
+                                            </p>
+                                        ) : null}
 
                                         <div className="text-center mt-5">
                                             <button

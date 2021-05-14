@@ -3,6 +3,8 @@ import { getSession } from "next-auth/client";
 
 import dbConnect from "@/utils/dbConnect";
 import User from "@/models/User";
+import Todo from "@/models/Todo";
+import Note from "@/models/Note";
 import { InfoType } from "@/types/index";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,6 +20,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 { email: session.user.email },
                 info
             );
+
+            const n = await new Todo({ email: session.user.email, list: [] });
+            n.save();
+
+            const to = await new Note({ email: session.user.email, list: [] });
+            to.save();
 
             console.log(user);
 
