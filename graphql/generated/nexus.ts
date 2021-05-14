@@ -71,8 +71,11 @@ export interface NexusGenFieldTypes {
     to: string | null; // String
   }
   Mutation: { // field return type
+    completeTodo: NexusGenRootTypes['Todo'] | null; // Todo
     createNote: NexusGenRootTypes['Note'] | null; // Note
+    createTodo: NexusGenRootTypes['Todo'] | null; // Todo
     deleteNote: NexusGenRootTypes['Note'] | null; // Note
+    deleteTodo: NexusGenRootTypes['Todo'] | null; // Todo
   }
   Note: { // field return type
     email: string | null; // String
@@ -103,8 +106,11 @@ export interface NexusGenFieldTypeNames {
     to: 'String'
   }
   Mutation: { // field return type name
+    completeTodo: 'Todo'
     createNote: 'Note'
+    createTodo: 'Todo'
     deleteNote: 'Note'
+    deleteTodo: 'Todo'
   }
   Note: { // field return type name
     email: 'String'
@@ -129,11 +135,23 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    completeTodo: { // args
+      desc: string; // String!
+      email: string; // String!
+    }
     createNote: { // args
       desc: string; // String!
       email: string; // String!
     }
+    createTodo: { // args
+      desc: string; // String!
+      email: string; // String!
+    }
     deleteNote: { // args
+      desc: string; // String!
+      email: string; // String!
+    }
+    deleteTodo: { // args
       desc: string; // String!
       email: string; // String!
     }

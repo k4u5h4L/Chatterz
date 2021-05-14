@@ -10,8 +10,11 @@ type Message {
 }
 
 type Mutation {
+  completeTodo(desc: String!, email: String!): Todo
   createNote(desc: String!, email: String!): Note
+  createTodo(desc: String!, email: String!): Todo
   deleteNote(desc: String!, email: String!): Note
+  deleteTodo(desc: String!, email: String!): Todo
 }
 
 type Note {
