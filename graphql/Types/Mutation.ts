@@ -198,7 +198,7 @@ export const Mutation = mutationType({
                         newTodo.list.forEach(
                             (todo: { desc: string; status: boolean }) => {
                                 if (todo.desc == desc) {
-                                    todo.status = true;
+                                    todo.status = !todo.status;
                                 }
                             }
                         );
