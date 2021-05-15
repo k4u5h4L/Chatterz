@@ -1,10 +1,11 @@
 import { stringArg, nonNull, mutationType } from "nexus";
-import { AuthenticationError } from "apollo-server-micro";
+import { AuthenticationError, ApolloError } from "apollo-server-micro";
 
 import dbConnect from "@/utils/dbConnect";
 import Note from "@/models/Note";
 import Todo from "@/models/Todo";
-import { TodoType } from "@/types/TodoType";
+import Chat from "@/models/Chat";
+import { ChatType } from "@/types/ChatType";
 
 export const Mutation = mutationType({
     definition(t) {
@@ -214,6 +215,38 @@ export const Mutation = mutationType({
                             `I guess you are not ${email}. If you are, login first before acessing the data.`
                         );
                     }
+                } else {
+                    throw new AuthenticationError("User is not logged in.");
+                }
+            },
+        });
+
+        t.field("createChat", {
+            type: "Chat",
+            args: {
+                email: nonNull(stringArg()),
+                name: nonNull(stringArg()),
+            },
+            // @ts-ignore
+            resolve: async (
+                _root,
+                { email, name }: { email: string; name: string },
+                ctx
+            ) => {
+                await dbConnect();
+
+                if (ctx.session) {
+                    const newChat = await new Chat({
+                        members: [
+                            {
+                                name: ctx.session.user.name,
+                                email: ctx.session.user.email,
+                            },
+                            { name: name, email: email },
+                        ],
+                    });
+
+                    newChat.save();
                 } else {
                     throw new AuthenticationError("User is not logged in.");
                 }

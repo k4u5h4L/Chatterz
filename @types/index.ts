@@ -3,3 +3,4 @@
 export * from "./InfoType";
 export * from "./TodoType";
 export * from "./NoteType";
+export * from "./ChatType";

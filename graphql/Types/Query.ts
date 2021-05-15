@@ -5,11 +5,13 @@ import {
     Message as ChatMessage,
     Note as ChatNote,
     Todo as ChatTodo,
+    Chat as ChatConvos,
 } from "./index";
 import dbConnect from "@/utils/dbConnect";
 import Message from "@/models/Message";
 import Note from "@/models/Note";
 import Todo from "@/models/Todo";
+import Chat from "@/models/Chat";
 
 export const Query = queryType({
     definition(t) {
@@ -73,6 +75,36 @@ export const Query = queryType({
                         }
 
                         return todo;
+                    } else {
+                        throw new AuthenticationError(
+                            `I guess you are not ${email}. If you are, login first before acessing the data.`
+                        );
+                    }
+                } else {
+                    throw new AuthenticationError("User is not logged in.");
+                }
+            },
+        });
+
+        t.field("ChatsByEMail", {
+            type: ChatConvos,
+            description:
+                "Get the chats of corresponding user using their email",
+            args: { email: idArg() },
+            resolve: async (_root, { email }: { email: string }, ctx) => {
+                await dbConnect();
+
+                if (ctx.session) {
+                    if (ctx.session.user.email == email) {
+                        const chats = await Chat.find({
+                            "members.email": email,
+                        });
+
+                        if (!chats) {
+                            console.log("does not exist");
+                        }
+
+                        return chats;
                     } else {
                         throw new AuthenticationError(
                             `I guess you are not ${email}. If you are, login first before acessing the data.`

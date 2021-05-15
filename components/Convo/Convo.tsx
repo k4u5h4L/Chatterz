@@ -16,9 +16,9 @@ export default function Convo() {
     const inputRef = useRef();
     const chatRef = useRef(null);
 
-    // useEffect(() => {
-    //     console.log("component has re-rendered");
-    // });
+    useEffect(() => {
+        console.log("component has re-rendered");
+    });
 
     const newMessageHandler = (arg) => {
         // console.log(arg);

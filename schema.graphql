@@ -2,6 +2,16 @@
 ### Do not make changes to this file directly
 
 
+type Chat {
+  _id: String
+  members: [ChatPerson]
+}
+
+type ChatPerson {
+  email: String
+  name: String
+}
+
 type Message {
   content: String
   from: String
@@ -11,6 +21,7 @@ type Message {
 
 type Mutation {
   completeTodo(desc: String!, email: String!): Todo
+  createChat(email: String!, name: String!): Chat
   createNote(desc: String!, email: String!): Note
   createTodo(desc: String!, email: String!): Todo
   deleteNote(desc: String!, email: String!): Note
@@ -27,6 +38,9 @@ type NoteDescription {
 }
 
 type Query {
+  """Get the chats of corresponding user using their email"""
+  ChatsByEMail(email: ID): Chat
+
   """Get the notes by its corresponding email of the user"""
   NoteByEmail(email: ID): Note
 

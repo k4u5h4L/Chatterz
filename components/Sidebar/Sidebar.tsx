@@ -1,7 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/client";
+import { useRouter } from "next/router";
+import { gql, useLazyQuery } from "@apollo/client";
+import { ChatType, Chat as IndividualChats } from "@/types/ChatType";
+
+const GET_CHATS = gql`
+    query GetChat($email: ID!) {
+        ChatByEmail(email: $email) {
+            members
+        }
+    }
+`;
 
 export default function Sidebar() {
+    const [session, sessionLoading] = useSession();
+    const router = useRouter();
+    const [chats, setChats] = useState<IndividualChats[]>([]);
+
+    const [getChats, { loading, error, data }] = useLazyQuery(GET_CHATS);
+
+    if (!session && !sessionLoading) {
+        router.push("/login");
+    }
+
+    useEffect(() => {
+        if (session) {
+            getChats({ variables: { email: session.user.email } });
+        }
+    }, [session]);
+
+    useEffect(() => {
+        if (data) {
+            setChats(data.ChatByEmail.chats);
+        }
+    }, [data]);
+
     return (
         <div className="sidebar border-end py-xl-4 py-3 px-xl-4 px-3">
             <div className="tab-content">
@@ -21,8 +55,9 @@ export default function Sidebar() {
                         <h3 className="mb-0 text-primary">Profile</h3>
                         <div>
                             <a
-                                href="signin.html"
                                 title=""
+                                style={{ cursor: "pointer" }}
+                                onClick={() => signOut()}
                                 className="btn btn-dark"
                             >
                                 Sign Out
@@ -665,104 +700,116 @@ export default function Sidebar() {
                                 </div>
                             </a>
                         </li> */}
-                        <li>
-                            <div className="hover_action">
-                                <button
-                                    type="button"
-                                    className="btn btn-link text-info"
-                                >
-                                    <i className="zmdi zmdi-eye"></i>
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-link text-warning"
-                                >
-                                    <i className="zmdi zmdi-star"></i>
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-link text-danger"
-                                >
-                                    <i className="zmdi zmdi-delete"></i>
-                                </button>
-                            </div>
-                            <Link href="/chat/djhsuahd">
-                                <a className="card">
-                                    <div className="card-body">
-                                        <div className="media">
-                                            <div className="avatar me-3">
-                                                <span
-                                                    className="
+
+                        {data && session
+                            ? chats.map(
+                                  (chat: IndividualChats, index: number) => (
+                                      <li key={index}>
+                                          <div className="hover_action">
+                                              <button
+                                                  type="button"
+                                                  className="btn btn-link text-info"
+                                              >
+                                                  <i className="zmdi zmdi-eye"></i>
+                                              </button>
+                                              <button
+                                                  type="button"
+                                                  className="btn btn-link text-warning"
+                                              >
+                                                  <i className="zmdi zmdi-star"></i>
+                                              </button>
+                                              <button
+                                                  type="button"
+                                                  className="btn btn-link text-danger"
+                                              >
+                                                  <i className="zmdi zmdi-delete"></i>
+                                              </button>
+                                          </div>
+                                          <Link href={`sdksdjksd`}>
+                                              <a className="card">
+                                                  <div className="card-body">
+                                                      <div className="media">
+                                                          <div className="avatar me-3">
+                                                              <span
+                                                                  className="
                                                         status
                                                         rounded-circle
                                                     "
-                                                ></span>
-                                                <img
-                                                    className="
+                                                              ></span>
+                                                              <img
+                                                                  className="
                                                         avatar
                                                         rounded-circle
                                                     "
-                                                    src="/assets/images/xs/avatar2.jpg"
-                                                    alt="avatar"
-                                                />
-                                            </div>
-                                            <div
-                                                className="
+                                                                  src="/assets/images/xs/avatar2.jpg"
+                                                                  alt="avatar"
+                                                              />
+                                                          </div>
+                                                          <div
+                                                              className="
                                                     media-body
                                                     overflow-hidden
                                                 "
-                                            >
-                                                <div
-                                                    className="
+                                                          >
+                                                              <div
+                                                                  className="
                                                         d-flex
                                                         align-items-center
                                                         mb-1
                                                     "
-                                                >
-                                                    <h6
-                                                        className="
+                                                              >
+                                                                  <h6
+                                                                      className="
                                                             text-truncate
                                                             mb-0
                                                             me-auto
                                                         "
-                                                    >
-                                                        Elizabeth Martin
-                                                        <span
-                                                            className="
+                                                                  >
+                                                                      {
+                                                                          chat.name
+                                                                      }
+                                                                      <span
+                                                                          className="
                                                                 badge badge-info
                                                             "
-                                                        >
-                                                            4
-                                                        </span>
-                                                    </h6>
-                                                    <p
-                                                        className="
+                                                                      >
+                                                                          4
+                                                                      </span>
+                                                                  </h6>
+                                                                  {/* <p
+                                                                      className="
                                                             small
                                                             text-muted
                                                             text-nowrap
                                                             ms-4
                                                             mb-0
                                                         "
-                                                    >
-                                                        11:08 am
-                                                    </p>
-                                                </div>
-                                                <div className="text-truncate">
-                                                    <i
-                                                        className="
+                                                                  >
+                                                                      11:08 am
+                                                                  </p> */}
+                                                              </div>
+                                                              <div className="text-truncate">
+                                                                  {/* <i
+                                                                      className="
                                                             zmdi zmdi-file-text
                                                             me-1
                                                         "
-                                                    ></i>
-                                                    It is a long established
-                                                    fact that a reader w...
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </Link>
-                        </li>
+                                                                  ></i> */}
+                                                                  {/* It is a long
+                                                                  established
+                                                                  fact that a
+                                                                  reader w... */}
+                                                                  {chat.email}
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </a>
+                                          </Link>
+                                      </li>
+                                  )
+                              )
+                            : "No chats added yet!"}
                         {/* <li className="online">
                             <div className="hover_action">
                                 <button

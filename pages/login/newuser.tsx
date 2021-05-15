@@ -38,6 +38,8 @@ export default function NewUser() {
     const submitHandler = async (e: any) => {
         e.preventDefault();
 
+        setLoading(true);
+
         const res = await fetch(`/api/user/info`, {
             method: "POST",
             mode: "cors",
@@ -52,11 +54,9 @@ export default function NewUser() {
 
         const data = await res.json();
 
-        console.log(data);
+        // console.log(data);
 
-        setTimeout(() => {
-            router.push("/");
-        }, 5000);
+        router.push("/");
     };
 
     return (

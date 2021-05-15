@@ -28,6 +28,14 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Chat: { // root type
+    _id?: string | null; // String
+    members?: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
+  }
+  ChatPerson: { // root type
+    email?: string | null; // String
+    name?: string | null; // String
+  }
   Message: { // root type
     content?: string | null; // String
     from?: string | null; // String
@@ -64,6 +72,14 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Chat: { // field return type
+    _id: string | null; // String
+    members: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
+  }
+  ChatPerson: { // field return type
+    email: string | null; // String
+    name: string | null; // String
+  }
   Message: { // field return type
     content: string | null; // String
     from: string | null; // String
@@ -72,6 +88,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     completeTodo: NexusGenRootTypes['Todo'] | null; // Todo
+    createChat: NexusGenRootTypes['Chat'] | null; // Chat
     createNote: NexusGenRootTypes['Note'] | null; // Note
     createTodo: NexusGenRootTypes['Todo'] | null; // Todo
     deleteNote: NexusGenRootTypes['Note'] | null; // Note
@@ -85,6 +102,7 @@ export interface NexusGenFieldTypes {
     desc: string | null; // String
   }
   Query: { // field return type
+    ChatsByEMail: NexusGenRootTypes['Chat'] | null; // Chat
     NoteByEmail: NexusGenRootTypes['Note'] | null; // Note
     TodoByEmail: NexusGenRootTypes['Todo'] | null; // Todo
   }
@@ -99,6 +117,14 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Chat: { // field return type name
+    _id: 'String'
+    members: 'ChatPerson'
+  }
+  ChatPerson: { // field return type name
+    email: 'String'
+    name: 'String'
+  }
   Message: { // field return type name
     content: 'String'
     from: 'String'
@@ -107,6 +133,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     completeTodo: 'Todo'
+    createChat: 'Chat'
     createNote: 'Note'
     createTodo: 'Todo'
     deleteNote: 'Note'
@@ -120,6 +147,7 @@ export interface NexusGenFieldTypeNames {
     desc: 'String'
   }
   Query: { // field return type name
+    ChatsByEMail: 'Chat'
     NoteByEmail: 'Note'
     TodoByEmail: 'Todo'
   }
@@ -139,6 +167,10 @@ export interface NexusGenArgTypes {
       desc: string; // String!
       email: string; // String!
     }
+    createChat: { // args
+      email: string; // String!
+      name: string; // String!
+    }
     createNote: { // args
       desc: string; // String!
       email: string; // String!
@@ -157,6 +189,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    ChatsByEMail: { // args
+      email?: string | null; // ID
+    }
     NoteByEmail: { // args
       email?: string | null; // ID
     }

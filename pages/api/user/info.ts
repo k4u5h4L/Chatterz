@@ -5,6 +5,7 @@ import dbConnect from "@/utils/dbConnect";
 import User from "@/models/User";
 import Todo from "@/models/Todo";
 import Note from "@/models/Note";
+// import Chat from "@/models/Chat";
 import { InfoType } from "@/types/index";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
