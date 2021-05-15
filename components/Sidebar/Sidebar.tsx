@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/client";
 import { useRouter } from "next/router";
@@ -21,6 +21,7 @@ export default function Sidebar() {
     const [session, sessionLoading] = useSession();
     const router = useRouter();
     const [chats, setChats] = useState<ChatType[]>([]);
+    const userRef = useRef<IndividualChats[]>([]);
 
     const [getChats, { loading, error, data }] = useLazyQuery(GET_CHATS);
 
@@ -37,8 +38,20 @@ export default function Sidebar() {
     useEffect(() => {
         if (data) {
             setChats(data.ChatsByEmail);
+            let temp: any[];
+
+            data.ChatsByEmail.forEach((chat) => {
+                chat.members.forEach((m) => {
+                    if (m.name != session.user.name) {
+                        userRef.current.push(m);
+                    }
+                });
+            });
+            console.log(userRef.current);
+
+            // userRef.current.push(temp);
         }
-    }, [data]);
+    }, [data, session]);
 
     return (
         <div className="sidebar border-end py-xl-4 py-3 px-xl-4 px-3">
@@ -399,7 +412,7 @@ export default function Sidebar() {
                                                             me-auto
                                                         "
                                                               >
-                                                                  {chat.members
+                                                                  {/* {chat.members
                                                                       .map(
                                                                           (
                                                                               mem
@@ -418,7 +431,13 @@ export default function Sidebar() {
                                                                                   ? (acc =
                                                                                         cur)
                                                                                   : null
-                                                                      )}
+                                                                      )} */}
+                                                                  {
+                                                                      userRef
+                                                                          .current[
+                                                                          index
+                                                                      ].name
+                                                                  }
                                                                   <span
                                                                       className="
                                                                 badge badge-info
@@ -450,7 +469,7 @@ export default function Sidebar() {
                                                                   established
                                                                   fact that a
                                                                   reader w... */}
-                                                              {chat.members
+                                                              {/* {chat.members
                                                                   .map(
                                                                       (mem) =>
                                                                           mem.email
@@ -467,7 +486,13 @@ export default function Sidebar() {
                                                                               ? (acc =
                                                                                     cur)
                                                                               : null
-                                                                  )}
+                                                                  )} */}
+                                                              {
+                                                                  userRef
+                                                                      .current[
+                                                                      index
+                                                                  ].email
+                                                              }
                                                           </div>
                                                       </div>
                                                   </div>
