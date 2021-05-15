@@ -8,6 +8,6 @@
         "rootDir": "./",
         "moduleResolution": "node"
     },
-    "include": ["./"],
+    "include": ["./server.ts"],
     "exclude": ["./dist/"]
 }

@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import { Server, Socket } from "socket.io";
 
 const app = express();
+let count = 1;
 
 const httpServer = createServer();
 
@@ -26,16 +27,16 @@ io.on("connection", (socket: Socket) => {
 
     socket.join("chat-room");
 
-    io.to("chat-room").emit("room initialized");
+    // io.to("chat-room").emit("private-chat", "room initialized");
 
-    socket.on("private message", (anotherSocketId, msg) => {
-        socket.to(anotherSocketId).emit("private message", socket.id, msg);
-    });
+    // socket.on("private message", (anotherSocketId, msg) => {
+    //     socket.to(anotherSocketId).emit("private message", socket.id, msg);
+    // });
 
     socket.on("private-chat", (arg) => {
         console.log(arg);
-        socket.emit("private-chat", `server: ${arg}`);
-        io.to("chat-room").emit("someone sent a message");
+        // socket.emit("private-chat", `server: ${arg}`);
+        socket.to("chat-room").emit("private-chat", `${arg}`);
     });
 });
 

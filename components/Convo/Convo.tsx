@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
+import { useSession } from "next-auth/client";
 
 import { messages as testMessages } from "@/databases/messages";
 import { useSocket } from "@/utils/useSocket";
 
 export default function Convo() {
-    const [messages, setMessages] = useState(testMessages);
+    const [messages, setMessages] = useState([]);
+    const [session] = useSession();
 
     // const [newMessage, setNewMessage] = useState<string>("");
     const socket: Socket = useSocket();
@@ -19,34 +21,35 @@ export default function Convo() {
     // });
 
     const newMessageHandler = (arg) => {
-        console.log(arg);
-        setMessages([
-            ...messages,
+        // console.log(arg);
+        setMessages((prevMessage) => [
+            ...prevMessage,
             {
                 content: arg,
-                to: "my-id",
+                to: session.user.name,
                 from: "some-id",
                 date: `${new Date()}`,
             },
         ]);
         chatRef.current.scrollIntoView({ behavior: "smooth" });
+        // console.log(socket.listeners("private-chat"));
     };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
         if (socket) {
-            setMessages([
-                ...messages,
+            setMessages((prevMessage) => [
+                ...prevMessage,
                 {
                     content: messageRef.current,
                     to: "some-id",
-                    from: "my-id",
+                    from: session.user.name,
                     date: `${new Date()}`,
                 },
             ]);
 
-            console.log(messages);
+            // console.log(messages);
 
             socket.emit("private-chat", messageRef.current);
             setSubmitted(!submitted);
@@ -55,14 +58,19 @@ export default function Convo() {
             // @ts-ignore
             inputRef.current.value = "";
             chatRef.current.scrollIntoView({ behavior: "smooth" });
-            // socket.off("chat-message-response");
+            // socket.off("private-chat");
+            // if (!socket.hasListeners("private-chat")) {
+            //     socket.on("private-chat", newMessageHandler);
+            // }
+            // socket.listeners("private-chat").pop();
+            // console.log(socket.listeners("private-chat"));
         }
     };
 
     useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" });
 
-        if (socket) {
+        if (socket && session) {
             socket.on("private-chat", newMessageHandler);
 
             socket.on("connect", () => {
@@ -70,7 +78,7 @@ export default function Convo() {
                 console.log("connected");
             });
         }
-    }, [socket, submitted]);
+    }, [socket, session]);
 
     const messageChangeHandler = (e: any) => {
         // setNewMessage(e.target.value);
@@ -376,7 +384,8 @@ export default function Convo() {
 
                             {messages.map((message, index) => (
                                 <div key={index}>
-                                    {message.from == "my-id" ? (
+                                    {message.from == "my-id" ||
+                                    message.from == session.user.name ? (
                                         <li className="d-flex message right">
                                             <div className="message-body">
                                                 <span className="date-time text-muted">
