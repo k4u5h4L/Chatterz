@@ -9,19 +9,14 @@ export default function Convo() {
 
     // const [newMessage, setNewMessage] = useState<string>("");
     const socket: Socket = useSocket();
-    // const [submitted, setSubmitted] = useState<boolean>(false);
+    const [submitted, setSubmitted] = useState<boolean>(false);
     const messageRef = useRef("");
     const inputRef = useRef();
     const chatRef = useRef(null);
 
-    // socket.on("connect", () => {
-    //     console.log(socket.id);
-    //     console.log("connected");
+    // useEffect(() => {
+    //     console.log("component has re-rendered");
     // });
-
-    useEffect(() => {
-        console.log("component has re-rendered");
-    });
 
     const newMessageHandler = (arg) => {
         console.log(arg);
@@ -53,10 +48,10 @@ export default function Convo() {
 
             console.log(messages);
 
-            socket.emit("chat-message", messageRef.current);
-            // setSubmitted(!submitted);
+            socket.emit("private-chat", messageRef.current);
+            setSubmitted(!submitted);
             // setNewMessage("");
-            // messageRef.current = "";
+
             // @ts-ignore
             inputRef.current.value = "";
             chatRef.current.scrollIntoView({ behavior: "smooth" });
@@ -68,9 +63,14 @@ export default function Convo() {
         chatRef.current.scrollIntoView({ behavior: "smooth" });
 
         if (socket) {
-            socket.on("chat-message-response", newMessageHandler);
+            socket.on("private-chat", newMessageHandler);
+
+            socket.on("connect", () => {
+                console.log(socket.id);
+                console.log("connected");
+            });
         }
-    }, [socket]);
+    }, [socket, submitted]);
 
     const messageChangeHandler = (e: any) => {
         // setNewMessage(e.target.value);

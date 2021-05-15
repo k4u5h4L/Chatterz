@@ -24,13 +24,18 @@ app.get("/api", (req: Request, res: Response) => {
 io.on("connection", (socket: Socket) => {
     console.log("connected");
 
+    socket.join("chat-room");
+
+    io.to("chat-room").emit("room initialized");
+
     socket.on("private message", (anotherSocketId, msg) => {
         socket.to(anotherSocketId).emit("private message", socket.id, msg);
     });
 
-    socket.on("chat-message", (arg) => {
+    socket.on("private-chat", (arg) => {
         console.log(arg);
-        socket.emit("chat-message-response", `server: ${arg}`);
+        socket.emit("private-chat", `server: ${arg}`);
+        io.to("chat-room").emit("someone sent a message");
     });
 });
 
