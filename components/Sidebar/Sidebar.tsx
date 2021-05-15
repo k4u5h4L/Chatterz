@@ -47,7 +47,7 @@ export default function Sidebar() {
                     }
                 });
             });
-            console.log(userRef.current);
+            // console.log(userRef.current);
 
             // userRef.current.push(temp);
         }

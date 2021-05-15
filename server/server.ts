@@ -24,8 +24,10 @@ app.get("/api", (req: Request, res: Response) => {
 
 io.on("connection", (socket: Socket) => {
     console.log("connected");
+    const chatRoomId = socket.handshake.query.chatRoomId;
+    console.log(chatRoomId);
 
-    socket.join("chat-room");
+    socket.join(chatRoomId);
 
     // io.to("chat-room").emit("private-chat", "room initialized");
 
@@ -36,7 +38,7 @@ io.on("connection", (socket: Socket) => {
     socket.on("private-chat", (arg) => {
         console.log(arg);
         // socket.emit("private-chat", `server: ${arg}`);
-        socket.to("chat-room").emit("private-chat", `${arg}`);
+        socket.to(chatRoomId).emit("private-chat", `${arg}`);
     });
 });
 

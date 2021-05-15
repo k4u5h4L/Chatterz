@@ -1,24 +1,52 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import { useSession } from "next-auth/client";
+// import { gql, useLazyQuery } from "@apollo/client";
 
-import { messages as testMessages } from "@/databases/messages";
 import { useSocket } from "@/utils/useSocket";
 
-export default function Convo() {
+// const GET_CHAT = gql`
+//     query GetChat($chatId: ID!) {
+//         ChatByChatId(chatId: $chatId) {
+//             chatId
+//             members {
+//                 name
+//                 email
+//             }
+//         }
+//     }
+// `;
+
+export default function Convo({ user, query, contact }) {
     const [messages, setMessages] = useState([]);
     const [session] = useSession();
+    const chatRoomId = query.id;
+
+    // console.log(contact);
+
+    // const [getChat, { loading, error, data }] = useLazyQuery(GET_CHAT);
 
     // const [newMessage, setNewMessage] = useState<string>("");
-    const socket: Socket = useSocket();
+    const socket: Socket = useSocket(chatRoomId);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const messageRef = useRef("");
     const inputRef = useRef();
     const chatRef = useRef(null);
 
-    useEffect(() => {
-        console.log("component has re-rendered");
-    });
+    // useEffect(() => {
+    //     console.log("component has re-rendered");
+    // });
+
+    // useEffect(() => {
+    //     if (session) {
+    //         getChat({ variables: { chatId: chatRoomId } });
+    //     }
+
+    //     return () => {
+    //         setMessages([]);
+    //         messageRef.current = "";
+    //     };
+    // }, []);
 
     const newMessageHandler = (arg) => {
         // console.log(arg);
@@ -122,7 +150,11 @@ export default function Convo() {
                                                         me-auto
                                                     "
                                             >
-                                                Jason Porter
+                                                {/* {data ? usersRef.current : null} */}
+                                                {contact.members[0].name ==
+                                                user.name
+                                                    ? contact.members[1].name
+                                                    : contact.members[0].name}
                                             </h6>
                                         </div>
                                         <div className="text-truncate">

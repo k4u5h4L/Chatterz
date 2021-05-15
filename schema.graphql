@@ -38,6 +38,9 @@ type NoteDescription {
 }
 
 type Query {
+  """Get the chats of corresponding user using the chat ID"""
+  ChatByChatId(chatId: ID): Chat
+
   """Get the chats of corresponding user using their email"""
   ChatsByEmail(email: ID): [Chat]
 

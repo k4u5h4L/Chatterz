@@ -102,6 +102,7 @@ export interface NexusGenFieldTypes {
     desc: string | null; // String
   }
   Query: { // field return type
+    ChatByChatId: NexusGenRootTypes['Chat'] | null; // Chat
     ChatsByEmail: Array<NexusGenRootTypes['Chat'] | null> | null; // [Chat]
     NoteByEmail: NexusGenRootTypes['Note'] | null; // Note
     TodoByEmail: NexusGenRootTypes['Todo'] | null; // Todo
@@ -147,6 +148,7 @@ export interface NexusGenFieldTypeNames {
     desc: 'String'
   }
   Query: { // field return type name
+    ChatByChatId: 'Chat'
     ChatsByEmail: 'Chat'
     NoteByEmail: 'Note'
     TodoByEmail: 'Todo'
@@ -189,6 +191,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    ChatByChatId: { // args
+      chatId?: string | null; // ID
+    }
     ChatsByEmail: { // args
       email?: string | null; // ID
     }

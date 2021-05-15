@@ -116,5 +116,29 @@ export const Query = queryType({
                 }
             },
         });
+
+        t.field("ChatByChatId", {
+            type: ChatConvos,
+            description:
+                "Get the chats of corresponding user using the chat ID",
+            args: { chatId: idArg() },
+            resolve: async (_root, { chatId }: { chatId: string }, ctx) => {
+                await dbConnect();
+
+                if (ctx.session) {
+                    const chat = await Chat.findOne({
+                        chatId: chatId,
+                    });
+
+                    if (!chat) {
+                        console.log("does not exist");
+                    }
+
+                    return chat;
+                } else {
+                    throw new AuthenticationError("User is not logged in.");
+                }
+            },
+        });
     },
 });
