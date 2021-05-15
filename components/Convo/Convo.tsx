@@ -5,18 +5,23 @@ import { messages as testMessages } from "@/databases/messages";
 import { useSocket } from "@/utils/useSocket";
 
 export default function Convo() {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(testMessages);
 
-    const [newMessage, setNewMessage] = useState<string>("");
+    // const [newMessage, setNewMessage] = useState<string>("");
     const socket: Socket = useSocket();
-    const [submitted, setSubmitted] = useState<boolean>(false);
-
+    // const [submitted, setSubmitted] = useState<boolean>(false);
+    const messageRef = useRef("");
+    const inputRef = useRef();
     const chatRef = useRef(null);
 
     // socket.on("connect", () => {
     //     console.log(socket.id);
     //     console.log("connected");
     // });
+
+    useEffect(() => {
+        console.log("component has re-rendered");
+    });
 
     const newMessageHandler = (arg) => {
         console.log(arg);
@@ -39,7 +44,7 @@ export default function Convo() {
             setMessages([
                 ...messages,
                 {
-                    content: newMessage,
+                    content: messageRef.current,
                     to: "some-id",
                     from: "my-id",
                     date: `${new Date()}`,
@@ -48,11 +53,14 @@ export default function Convo() {
 
             console.log(messages);
 
-            socket.emit("chat-message", newMessage);
-            setSubmitted(!submitted);
-            setNewMessage("");
+            socket.emit("chat-message", messageRef.current);
+            // setSubmitted(!submitted);
+            // setNewMessage("");
+            // messageRef.current = "";
+            // @ts-ignore
+            inputRef.current.value = "";
             chatRef.current.scrollIntoView({ behavior: "smooth" });
-            socket.off("chat-message-response");
+            // socket.off("chat-message-response");
         }
     };
 
@@ -62,17 +70,18 @@ export default function Convo() {
         if (socket) {
             socket.on("chat-message-response", newMessageHandler);
         }
-    }, [socket, submitted]);
+    }, [socket]);
 
     const messageChangeHandler = (e: any) => {
-        setNewMessage(e.target.value);
+        // setNewMessage(e.target.value);
+        messageRef.current = e.target.value;
     };
 
-    const handleKeyPress = (e: any) => {
-        if (e.key === "Enter") {
-            handleSubmit(e);
-        }
-    };
+    // const handleKeyPress = (e: any) => {
+    //     if (e.key === "Enter") {
+    //         handleSubmit(e);
+    //     }
+    // };
 
     return (
         <div className="main px-xl-5 px-lg-4 px-3">
@@ -448,7 +457,8 @@ export default function Convo() {
                                             }
                                             className="form-control border-0 pl-0"
                                             placeholder="Type your message..."
-                                            value={newMessage}
+                                            // value={messageRef.current}
+                                            ref={inputRef}
                                             // onKeyPress={handleKeyPress}
                                         />
 

@@ -23,6 +23,11 @@ app.get("/api", (req: Request, res: Response) => {
 
 io.on("connection", (socket: Socket) => {
     console.log("connected");
+
+    socket.on("private message", (anotherSocketId, msg) => {
+        socket.to(anotherSocketId).emit("private message", socket.id, msg);
+    });
+
     socket.on("chat-message", (arg) => {
         console.log(arg);
         socket.emit("chat-message-response", `server: ${arg}`);

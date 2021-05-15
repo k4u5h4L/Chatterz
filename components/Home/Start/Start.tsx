@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Start() {
+export default function Start({ user }) {
     return (
         <div className="main px-xl-5 px-lg-4 px-3">
             <div className="chat-body">
@@ -25,7 +25,9 @@ export default function Start() {
                             <span className="a-bg-1"></span>
                             <span className="a-bg-2"></span>
                         </div>
-                        <h5 className="font-weight-bold">Hey, Robert!</h5>
+                        <h5 className="font-weight-bold">
+                            Hey, {user.name || user.email}!
+                        </h5>
                         <p>Please select a chat to start messaging.</p>
                     </div>
                 </div>
