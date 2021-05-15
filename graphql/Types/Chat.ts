@@ -11,7 +11,7 @@ const ChatPerson = objectType({
 export const Chat = objectType({
     name: "Chat",
     definition(t) {
-        t.string("_id");
+        t.string("chatId");
         t.list.field("members", {
             type: ChatPerson,
         });

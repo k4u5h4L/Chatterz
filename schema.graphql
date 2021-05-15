@@ -3,7 +3,7 @@
 
 
 type Chat {
-  _id: String
+  chatId: String
   members: [ChatPerson]
 }
 
@@ -39,7 +39,7 @@ type NoteDescription {
 
 type Query {
   """Get the chats of corresponding user using their email"""
-  ChatsByEMail(email: ID): Chat
+  ChatsByEmail(email: ID): [Chat]
 
   """Get the notes by its corresponding email of the user"""
   NoteByEmail(email: ID): Note

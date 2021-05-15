@@ -8,7 +8,11 @@ import { ChatType, Chat as IndividualChats } from "@/types/ChatType";
 const GET_CHATS = gql`
     query GetChat($email: ID!) {
         ChatByEmail(email: $email) {
-            members
+            _id
+            members {
+                name
+                email
+            }
         }
     }
 `;

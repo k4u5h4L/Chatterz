@@ -8,10 +8,11 @@ import {
     Chat as ChatConvos,
 } from "./index";
 import dbConnect from "@/utils/dbConnect";
-import Message from "@/models/Message";
+// import Message from "@/models/Message";
 import Note from "@/models/Note";
 import Todo from "@/models/Todo";
 import Chat from "@/models/Chat";
+import { ChatType } from "@/types/ChatType";
 
 export const Query = queryType({
     definition(t) {
@@ -86,7 +87,7 @@ export const Query = queryType({
             },
         });
 
-        t.field("ChatsByEMail", {
+        t.list.field("ChatsByEmail", {
             type: ChatConvos,
             description:
                 "Get the chats of corresponding user using their email",

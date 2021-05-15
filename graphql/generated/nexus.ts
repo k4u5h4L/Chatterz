@@ -29,7 +29,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Chat: { // root type
-    _id?: string | null; // String
+    chatId?: string | null; // String
     members?: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
   }
   ChatPerson: { // root type
@@ -73,7 +73,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Chat: { // field return type
-    _id: string | null; // String
+    chatId: string | null; // String
     members: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
   }
   ChatPerson: { // field return type
@@ -102,7 +102,7 @@ export interface NexusGenFieldTypes {
     desc: string | null; // String
   }
   Query: { // field return type
-    ChatsByEMail: NexusGenRootTypes['Chat'] | null; // Chat
+    ChatsByEmail: Array<NexusGenRootTypes['Chat'] | null> | null; // [Chat]
     NoteByEmail: NexusGenRootTypes['Note'] | null; // Note
     TodoByEmail: NexusGenRootTypes['Todo'] | null; // Todo
   }
@@ -118,7 +118,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Chat: { // field return type name
-    _id: 'String'
+    chatId: 'String'
     members: 'ChatPerson'
   }
   ChatPerson: { // field return type name
@@ -147,7 +147,7 @@ export interface NexusGenFieldTypeNames {
     desc: 'String'
   }
   Query: { // field return type name
-    ChatsByEMail: 'Chat'
+    ChatsByEmail: 'Chat'
     NoteByEmail: 'Note'
     TodoByEmail: 'Todo'
   }
@@ -189,7 +189,7 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    ChatsByEMail: { // args
+    ChatsByEmail: { // args
       email?: string | null; // ID
     }
     NoteByEmail: { // args

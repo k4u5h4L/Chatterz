@@ -4,6 +4,7 @@ export interface Chat {
 }
 
 export interface ChatType {
-    [_id: string]: any;
+    // [_id: string]: any;
+    chatId: string;
     members: [Chat];
 }

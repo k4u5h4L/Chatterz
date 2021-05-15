@@ -1,5 +1,6 @@
 import { stringArg, nonNull, mutationType } from "nexus";
 import { AuthenticationError, ApolloError } from "apollo-server-micro";
+import { uuid } from "uuidv4";
 
 import dbConnect from "@/utils/dbConnect";
 import Note from "@/models/Note";
@@ -237,6 +238,7 @@ export const Mutation = mutationType({
 
                 if (ctx.session) {
                     const newChat = await new Chat({
+                        chatId: uuid(),
                         members: [
                             {
                                 name: ctx.session.user.name,
@@ -247,6 +249,8 @@ export const Mutation = mutationType({
                     });
 
                     newChat.save();
+
+                    return newChat;
                 } else {
                     throw new AuthenticationError("User is not logged in.");
                 }
