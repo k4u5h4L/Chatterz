@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import { useSession } from "next-auth/client";
+import Router from "next/router";
 // import { gql, useLazyQuery } from "@apollo/client";
 
 import { useSocket } from "@/utils/useSocket";
@@ -96,6 +97,16 @@ export default function Convo({ user, query, contact }) {
     };
 
     useEffect(() => {
+        Router.events.on("routeChangeComplete", (url) => {
+            setMessages([]);
+            messageRef.current = "";
+
+            // @ts-ignore
+            inputRef.current.value = "";
+        });
+    }, []);
+
+    useEffect(() => {
         chatRef.current.scrollIntoView({ behavior: "smooth" });
 
         if (socket && session) {
@@ -106,6 +117,14 @@ export default function Convo({ user, query, contact }) {
                 console.log("connected");
             });
         }
+
+        // return function cleanup() {
+        //     setMessages([]);
+        //     messageRef.current = "";
+
+        //     // @ts-ignore
+        //     inputRef.current.value = "";
+        // };
     }, [socket, session]);
 
     const messageChangeHandler = (e: any) => {

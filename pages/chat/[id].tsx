@@ -17,6 +17,22 @@ import Invite from "@/components/Home/Invite/Invite";
 //     ssr: false,
 // });
 
+const ChatComponent = ({ user, query, contact }) => {
+    return (
+        <>
+            <div id="layout" className="theme-cyan">
+                <Navbar />
+                <Sidebar />
+                <Rightbar />
+                <Convo user={user} query={query} contact={contact} />
+                <Invite />
+            </div>
+        </>
+    );
+};
+
+export default ChatComponent;
+
 export const getServerSideProps: GetServerSideProps = async ({
     req,
     query,
@@ -35,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
 
     const chat = await Chat.findOne({ chatId: query.id });
-    console.log(chat);
 
     return {
         props: {
@@ -45,19 +60,3 @@ export const getServerSideProps: GetServerSideProps = async ({
         },
     };
 };
-
-const ChatComponent = ({ user, query, contact }) => {
-    return (
-        <>
-            <div id="layout" className="theme-cyan">
-                <Navbar />
-                <Sidebar />
-                <Rightbar />
-                <Convo user={user} query={query} contact={contact} />
-                <Invite />
-            </div>
-        </>
-    );
-};
-
-export default ChatComponent;
