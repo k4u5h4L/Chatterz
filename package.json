@@ -47,7 +47,6 @@
     "peerOptionalDependencies": {
         "mongodb": "^3.6.5"
     },
-    "license": "no-liscense",
     "devDependencies": {
         "@types/express": "^4.17.11",
         "@types/next-auth": "^3.7.2",
