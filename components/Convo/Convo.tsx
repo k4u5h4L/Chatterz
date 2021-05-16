@@ -61,7 +61,7 @@ export default function Convo({ user, query, contact }) {
             },
         ]);
         chatRef.current.scrollIntoView({ behavior: "smooth" });
-        // console.log(socket.listeners("private-chat"));
+        console.log(socket.listeners("private-chat"));
     };
 
     const handleSubmit = (e: any) => {
@@ -103,6 +103,8 @@ export default function Convo({ user, query, contact }) {
 
             // @ts-ignore
             inputRef.current.value = "";
+
+            Router.reload();
         });
     }, []);
 

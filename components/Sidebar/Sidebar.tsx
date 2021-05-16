@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/client";
 import { useRouter } from "next/router";
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { Modal } from "reactstrap";
+
 import { ChatType, Chat as IndividualChats } from "@/types/ChatType";
 
 const GET_CHATS = gql`
@@ -17,17 +19,55 @@ const GET_CHATS = gql`
     }
 `;
 
+const ADD_CHAT = gql`
+    mutation AddChat($email: String!, $name: String!) {
+        createChat(email: $email, name: $name) {
+            chatId
+            members {
+                email
+                name
+            }
+        }
+    }
+`;
+
 export default function Sidebar() {
     const [session, sessionLoading] = useSession();
     const router = useRouter();
     const [chats, setChats] = useState<ChatType[]>([]);
-    const userRef = useRef<IndividualChats[]>([]);
+
+    const [modalFormOpen, setModalFormOpen] = useState<boolean>(false);
 
     const [getChats, { loading, error, data }] = useLazyQuery(GET_CHATS);
+    const [addChat, { data: newChatData }] = useMutation(ADD_CHAT);
+
+    const newChatRef = useRef({
+        email: "",
+        name: "",
+    });
 
     if (!session && !sessionLoading) {
         router.push("/login");
     }
+
+    const handleNewChatSubmit = () => {
+        addChat({
+            variables: {
+                email: newChatRef.current.email,
+                name: newChatRef.current.name,
+            },
+        });
+
+        setModalFormOpen((prevVal) => !prevVal);
+    };
+
+    const handleNewChatNameChange = (e: any) => {
+        newChatRef.current.name = e.target.value;
+    };
+
+    const handleNewChatEmailChange = (e: any) => {
+        newChatRef.current.email = e.target.value;
+    };
 
     useEffect(() => {
         if (session) {
@@ -36,20 +76,18 @@ export default function Sidebar() {
     }, [session]);
 
     useEffect(() => {
+        if (newChatData) {
+            setChats((prevChats) => [
+                ...prevChats,
+                { ...newChatData.createChat },
+            ]);
+            // console.log(newChatData);
+        }
+    }, [newChatData]);
+
+    useEffect(() => {
         if (data) {
             setChats(data.ChatsByEmail);
-            let temp: any[];
-
-            data.ChatsByEmail.forEach((chat) => {
-                chat.members.forEach((m) => {
-                    if (m.name != session.user.name) {
-                        userRef.current.push(m);
-                    }
-                });
-            });
-            // console.log(userRef.current);
-
-            // userRef.current.push(temp);
         }
     }, [data, session]);
 
@@ -286,7 +324,11 @@ export default function Sidebar() {
                     >
                         <h3 className="mb-0 text-primary">Chat</h3>
                         <div>
-                            <button className="btn btn-dark" type="button">
+                            <button
+                                className="btn btn-dark"
+                                type="button"
+                                onClick={() => setModalFormOpen(true)}
+                            >
                                 New Chat
                             </button>
                         </div>
@@ -412,32 +454,20 @@ export default function Sidebar() {
                                                             me-auto
                                                         "
                                                               >
-                                                                  {/* {chat.members
-                                                                      .map(
-                                                                          (
-                                                                              mem
-                                                                          ) =>
-                                                                              mem.name
-                                                                      )
-                                                                      .reduce(
-                                                                          (
-                                                                              acc,
-                                                                              cur
-                                                                          ) =>
-                                                                              cur !=
-                                                                              session
-                                                                                  .user
-                                                                                  .name
-                                                                                  ? (acc =
-                                                                                        cur)
-                                                                                  : null
-                                                                      )} */}
-                                                                  {
-                                                                      userRef
-                                                                          .current[
-                                                                          index
-                                                                      ].name
-                                                                  }
+                                                                  {chat
+                                                                      .members[0]
+                                                                      .name ==
+                                                                  session.user
+                                                                      .name
+                                                                      ? // @ts-ignore
+                                                                        // @ts-ignore
+                                                                        chat
+                                                                            .members[1]
+                                                                            .name
+                                                                      : chat
+                                                                            .members[0]
+                                                                            .name}
+
                                                                   <span
                                                                       className="
                                                                 badge badge-info
@@ -469,30 +499,17 @@ export default function Sidebar() {
                                                                   established
                                                                   fact that a
                                                                   reader w... */}
-                                                              {/* {chat.members
-                                                                  .map(
-                                                                      (mem) =>
-                                                                          mem.email
-                                                                  )
-                                                                  .reduce(
-                                                                      (
-                                                                          acc,
-                                                                          cur
-                                                                      ) =>
-                                                                          cur !=
-                                                                          session
-                                                                              .user
-                                                                              .email
-                                                                              ? (acc =
-                                                                                    cur)
-                                                                              : null
-                                                                  )} */}
-                                                              {
-                                                                  userRef
-                                                                      .current[
-                                                                      index
-                                                                  ].email
-                                                              }
+                                                              {chat.members[0]
+                                                                  .email ==
+                                                              session.user.email
+                                                                  ? // @ts-ignore
+                                                                    // @ts-ignore
+                                                                    chat
+                                                                        .members[1]
+                                                                        .email
+                                                                  : chat
+                                                                        .members[0]
+                                                                        .email}
                                                           </div>
                                                       </div>
                                                   </div>
@@ -1807,6 +1824,63 @@ export default function Sidebar() {
                     </div>
                 </div>
             </div>
+
+            <>
+                <Modal
+                    isOpen={modalFormOpen}
+                    toggle={() => setModalFormOpen(false)}
+                >
+                    <div className="card border-0 shadow-sm">
+                        <div className="card-body">
+                            <h4 className="text-center">
+                                Enter the contact name and email
+                            </h4>
+
+                            <form className="mb-4 mt-5">
+                                <div className="input-group mb-2">
+                                    <input
+                                        type="text"
+                                        className="
+                                                    form-control form-control-lg
+                                                "
+                                        placeholder="Enter his/her contact name"
+                                        onChange={(e) =>
+                                            handleNewChatNameChange(e)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="input-group mb-4">
+                                    <input
+                                        type="email"
+                                        className="
+                                                    form-control form-control-lg
+                                                "
+                                        placeholder="Enter his/her email"
+                                        onChange={(e) =>
+                                            handleNewChatEmailChange(e)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="text-center mt-5">
+                                    <div>
+                                        <button
+                                            className="btn btn-dark"
+                                            type="button"
+                                            onClick={() =>
+                                                handleNewChatSubmit()
+                                            }
+                                        >
+                                            Add contact
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </Modal>
+            </>
         </div>
     );
 }
