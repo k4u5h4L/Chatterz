@@ -35,7 +35,7 @@
 
 ## Features:
 
--   [ ] Real time one-to-one messaging
+-   [x] Real time one-to-one messaging
 
 -   [x] Integrated calendar inside the messaging app
 
@@ -44,6 +44,8 @@
 -   [x] Integrated to-do list in the chats
 
 -   [ ] On-to-one or group Video calling
+
+-   [ ] Group chats
 
 -   [ ] End-to-end encryption
 
@@ -79,7 +81,7 @@ yarn run watch
 yarn run dev:server
 ```
 
--   Now with all the API keys and the backend server running, run development server for the client in the root directory of this project.
+-   Now with all the API keys and the backend server running, run development server for the client.
 
 ```
 yarn dev

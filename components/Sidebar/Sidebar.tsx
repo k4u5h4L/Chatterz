@@ -460,7 +460,6 @@ export default function Sidebar() {
                                                                   session.user
                                                                       .name
                                                                       ? // @ts-ignore
-                                                                        // @ts-ignore
                                                                         chat
                                                                             .members[1]
                                                                             .name
@@ -503,7 +502,6 @@ export default function Sidebar() {
                                                                   .email ==
                                                               session.user.email
                                                                   ? // @ts-ignore
-                                                                    // @ts-ignore
                                                                     chat
                                                                         .members[1]
                                                                         .email
