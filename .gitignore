@@ -9,6 +9,7 @@
 temp/
 dist/
 build/
+models/Chat.js
 
 # pwa stuff
 public/sw.js

@@ -19,7 +19,7 @@ import { useSocket } from "@/utils/useSocket";
 // `;
 
 export default function Convo({ user, query, contact }) {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(contact.messages);
     const [session] = useSession();
     const chatRoomId = query.id;
 
@@ -57,9 +57,8 @@ export default function Convo({ user, query, contact }) {
             ...prevMessage,
             {
                 content: messageContent.content,
-                to: session.user.email,
                 from:
-                    contact.members[0].email != session.user.email
+                    contact.members[0].email != user.email
                         ? contact.members[0].email
                         : contact.members[1].email,
                 date: `${new Date()}`,
@@ -78,18 +77,21 @@ export default function Convo({ user, query, contact }) {
                 ...prevMessage,
                 {
                     content: messageRef.current,
-                    to:
-                        contact.members[0].email != session.user.email
-                            ? contact.members[0].email
-                            : contact.members[1].email,
-                    from: session.user.name,
+                    from: user.email,
                     date: `${new Date()}`,
+                    sentiment: 0,
                 },
             ]);
 
             // console.log(messages);
 
-            socket.emit("private-chat", messageRef.current);
+            socket.emit(
+                "private-chat",
+                JSON.stringify({
+                    content: messageRef.current,
+                    from: session.user.email,
+                })
+            );
             setSubmitted(!submitted);
             // setNewMessage("");
 
@@ -446,8 +448,7 @@ export default function Convo({ user, query, contact }) {
 
                             {messages.map((message, index) => (
                                 <div key={index}>
-                                    {message.from == user.email ||
-                                    message.from == session.user.name ? (
+                                    {message.from == user.email ? (
                                         <li className="d-flex message right">
                                             <div className="message-body">
                                                 <span className="date-time text-muted">
@@ -530,7 +531,6 @@ export default function Convo({ user, query, contact }) {
                                                             </div>
                                                         </div>
                                                     )}
-                                                    {/* #@### */}
                                                 </div>
                                             </div>
                                         </li>

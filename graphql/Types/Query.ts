@@ -2,13 +2,11 @@ import { queryType, idArg } from "nexus";
 import { AuthenticationError } from "apollo-server-micro";
 
 import {
-    Message as ChatMessage,
     Note as ChatNote,
     Todo as ChatTodo,
     Chat as ChatConvos,
 } from "./index";
 import dbConnect from "@/utils/dbConnect";
-// import Message from "@/models/Message";
 import Note from "@/models/Note";
 import Todo from "@/models/Todo";
 import Chat from "@/models/Chat";
@@ -16,18 +14,6 @@ import { ChatType } from "@/types/ChatType";
 
 export const Query = queryType({
     definition(t) {
-        // t.list.field("Message", {
-        //     type: ChatMessage,
-        //     description: "All messages sent till now",
-        //     resolve: async (_root, _args, ctx) => {
-        //         await dbConnect();
-
-        //         const messages = await Message.find({});
-
-        //         return messages;
-        //     },
-        // });
-
         t.field("NoteByEmail", {
             type: ChatNote,
             description: "Get the notes by its corresponding email of the user",

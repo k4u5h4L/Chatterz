@@ -8,6 +8,10 @@ import natural, { WordTokenizer } from "natural";
 import SpellCorrector from "spelling-corrector";
 import SW from "stopword";
 
+// @ts-ignore
+import Chat from "./Chat";
+import dbConnect from "./dbConnect";
+
 const spellCorrector = new SpellCorrector();
 spellCorrector.loadDictionary();
 
@@ -30,7 +34,9 @@ app.get("/api", (req: Request, res: Response) => {
     res.send({ message: "you've reached api root!" });
 });
 
-io.on("connection", (socket: Socket) => {
+io.on("connection", async (socket: Socket) => {
+    await dbConnect();
+
     console.log("connected");
     const chatRoomId = socket.handshake.query.chatRoomId;
     console.log(chatRoomId);
@@ -43,12 +49,13 @@ io.on("connection", (socket: Socket) => {
     //     socket.to(anotherSocketId).emit("private message", socket.id, msg);
     // });
 
-    socket.on("private-chat", (arg) => {
-        console.log(arg);
+    socket.on("private-chat", async (arg) => {
+        const MessageContent = JSON.parse(arg);
+        console.log(MessageContent);
         // socket.emit("private-chat", `server: ${arg}`);
 
         // ############################################################################################
-        const lexedReview = aposToLexForm(arg);
+        const lexedReview = aposToLexForm(MessageContent.content);
 
         // casing
         const casedReview = lexedReview.toLowerCase();
@@ -78,16 +85,35 @@ io.on("connection", (socket: Socket) => {
 
         const analysis = analyzer.getSentiment(filteredReview);
 
-        console.log(`Sentiment for "${arg}": ${analysis}`);
+        console.log(`Sentiment for "${MessageContent.content}": ${analysis}`);
 
         // ############################################################################################
 
         // socket.to(chatRoomId).emit("private-chat", `${arg}`);
+
+        const mess = {
+            ...MessageContent,
+            date: `${new Date()}`,
+            sentiment: !analysis ? 0 : analysis,
+        };
+
+        // const updatedChat = await Chat.findOneAndUpdate(
+        //     { chatId: chatRoomId },
+        //     { $push: { messages: mess } }
+        // );
+
+        Chat.findOneAndUpdate(
+            { chatId: chatRoomId },
+            { $push: { messages: mess } }
+        )
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err));
+
         socket.to(chatRoomId).emit(
             "private-chat",
             JSON.stringify({
                 sentiment: !analysis ? 0 : analysis,
-                content: arg,
+                content: MessageContent.content,
             })
         );
     });

@@ -5,6 +5,7 @@
 type Chat {
   chatId: String
   members: [ChatPerson]
+  messages: [Messages]
 }
 
 type ChatPerson {
@@ -12,11 +13,11 @@ type ChatPerson {
   name: String
 }
 
-type Message {
+type Messages {
   content: String
+  date: String
   from: String
-  id: String
-  to: String
+  sentiment: Int
 }
 
 type Mutation {

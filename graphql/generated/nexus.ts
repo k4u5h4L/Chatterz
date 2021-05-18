@@ -31,16 +31,17 @@ export interface NexusGenObjects {
   Chat: { // root type
     chatId?: string | null; // String
     members?: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
+    messages?: Array<NexusGenRootTypes['Messages'] | null> | null; // [Messages]
   }
   ChatPerson: { // root type
     email?: string | null; // String
     name?: string | null; // String
   }
-  Message: { // root type
+  Messages: { // root type
     content?: string | null; // String
+    date?: string | null; // String
     from?: string | null; // String
-    id?: string | null; // String
-    to?: string | null; // String
+    sentiment?: number | null; // Int
   }
   Mutation: {};
   Note: { // root type
@@ -75,16 +76,17 @@ export interface NexusGenFieldTypes {
   Chat: { // field return type
     chatId: string | null; // String
     members: Array<NexusGenRootTypes['ChatPerson'] | null> | null; // [ChatPerson]
+    messages: Array<NexusGenRootTypes['Messages'] | null> | null; // [Messages]
   }
   ChatPerson: { // field return type
     email: string | null; // String
     name: string | null; // String
   }
-  Message: { // field return type
+  Messages: { // field return type
     content: string | null; // String
+    date: string | null; // String
     from: string | null; // String
-    id: string | null; // String
-    to: string | null; // String
+    sentiment: number | null; // Int
   }
   Mutation: { // field return type
     completeTodo: NexusGenRootTypes['Todo'] | null; // Todo
@@ -121,16 +123,17 @@ export interface NexusGenFieldTypeNames {
   Chat: { // field return type name
     chatId: 'String'
     members: 'ChatPerson'
+    messages: 'Messages'
   }
   ChatPerson: { // field return type name
     email: 'String'
     name: 'String'
   }
-  Message: { // field return type name
+  Messages: { // field return type name
     content: 'String'
+    date: 'String'
     from: 'String'
-    id: 'String'
-    to: 'String'
+    sentiment: 'Int'
   }
   Mutation: { // field return type name
     completeTodo: 'Todo'

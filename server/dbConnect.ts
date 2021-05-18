@@ -12,12 +12,15 @@ const dbConnect = async () => {
         console.log("MongoDB database connection established successfully");
     });
 
-    return mongoose.connect(process.env.DATABASE_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-    });
+    return mongoose.connect(
+        process.env.DATABASE_URL || "mongodb://localhost:27017/chatterzDB",
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true,
+        }
+    );
 };
 
 export default dbConnect;
