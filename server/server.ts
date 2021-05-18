@@ -3,6 +3,14 @@ import cors from "cors";
 import express, { Request, Response } from "express";
 import { Server, Socket } from "socket.io";
 
+import aposToLexForm from "apos-to-lex-form";
+import natural, { WordTokenizer } from "natural";
+import SpellCorrector from "spelling-corrector";
+import SW from "stopword";
+
+const spellCorrector = new SpellCorrector();
+spellCorrector.loadDictionary();
+
 const app = express();
 let count = 1;
 
@@ -38,7 +46,50 @@ io.on("connection", (socket: Socket) => {
     socket.on("private-chat", (arg) => {
         console.log(arg);
         // socket.emit("private-chat", `server: ${arg}`);
-        socket.to(chatRoomId).emit("private-chat", `${arg}`);
+
+        // ############################################################################################
+        const lexedReview = aposToLexForm(arg);
+
+        // casing
+        const casedReview = lexedReview.toLowerCase();
+
+        // removing
+        const alphaOnlyReview = casedReview.replace(/[^a-zA-Z\s]+/g, "");
+
+        // tokenize review
+        //   const { WordTokenizer } = natural;
+        const tokenizer = new WordTokenizer();
+        const tokenizedReview = tokenizer.tokenize(alphaOnlyReview);
+
+        // spell correction
+        tokenizedReview.forEach((word, index) => {
+            tokenizedReview[index] = spellCorrector.correct(word);
+        });
+
+        // remove stopwords
+        const filteredReview = SW.removeStopwords(tokenizedReview);
+
+        const { SentimentAnalyzer, PorterStemmer } = natural;
+        const analyzer = new SentimentAnalyzer(
+            "English",
+            PorterStemmer,
+            "afinn"
+        );
+
+        const analysis = analyzer.getSentiment(filteredReview);
+
+        console.log(`Sentiment for "${arg}": ${analysis}`);
+
+        // ############################################################################################
+
+        // socket.to(chatRoomId).emit("private-chat", `${arg}`);
+        socket.to(chatRoomId).emit(
+            "private-chat",
+            JSON.stringify({
+                sentiment: !analysis ? 0 : analysis,
+                content: arg,
+            })
+        );
     });
 });
 

@@ -49,15 +49,21 @@ export default function Convo({ user, query, contact }) {
     //     };
     // }, []);
 
-    const newMessageHandler = (arg) => {
-        // console.log(arg);
+    const newMessageHandler = (arg: string) => {
+        const messageContent: { content: string; sentiment: number } =
+            JSON.parse(arg);
+        console.log(messageContent);
         setMessages((prevMessage) => [
             ...prevMessage,
             {
-                content: arg,
-                to: session.user.name,
-                from: "some-id",
+                content: messageContent.content,
+                to: session.user.email,
+                from:
+                    contact.members[0].email != session.user.email
+                        ? contact.members[0].email
+                        : contact.members[1].email,
                 date: `${new Date()}`,
+                sentiment: messageContent.sentiment,
             },
         ]);
         chatRef.current.scrollIntoView({ behavior: "smooth" });
@@ -72,7 +78,10 @@ export default function Convo({ user, query, contact }) {
                 ...prevMessage,
                 {
                     content: messageRef.current,
-                    to: "some-id",
+                    to:
+                        contact.members[0].email != session.user.email
+                            ? contact.members[0].email
+                            : contact.members[1].email,
                     from: session.user.name,
                     date: `${new Date()}`,
                 },
@@ -437,7 +446,7 @@ export default function Convo({ user, query, contact }) {
 
                             {messages.map((message, index) => (
                                 <div key={index}>
-                                    {message.from == "my-id" ||
+                                    {message.from == user.email ||
                                     message.from == session.user.name ? (
                                         <li className="d-flex message right">
                                             <div className="message-body">
@@ -492,6 +501,36 @@ export default function Convo({ user, query, contact }) {
                                                     <div className="message-content p-3">
                                                         {message.content}
                                                     </div>
+                                                    {!message.sentiment ? null : (
+                                                        <div className="dropdown">
+                                                            <div
+                                                                className="
+                                                        text-muted
+                                                        ms-1
+                                                        p-2
+                                                        text-muted
+                                                    "
+                                                                style={{
+                                                                    cursor: "pointer",
+                                                                }}
+                                                                onClick={() =>
+                                                                    console.log(
+                                                                        "emoji clicked"
+                                                                    )
+                                                                }
+                                                                data-toggle="dropdown"
+                                                                aria-haspopup="true"
+                                                                aria-expanded="false"
+                                                            >
+                                                                <i
+                                                                    className="
+                                                            zmdi zmdi-more-vert
+                                                        "
+                                                                ></i>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {/* #@### */}
                                                 </div>
                                             </div>
                                         </li>
