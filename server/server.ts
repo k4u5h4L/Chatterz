@@ -9,8 +9,11 @@ import SpellCorrector from "spelling-corrector";
 import SW from "stopword";
 
 // @ts-ignore
-import Chat from "./Chat";
-import dbConnect from "./dbConnect";
+// import Chat from "./Chat";
+// import dbConnect from "./dbConnect";
+
+import Chat from "@/models/Chat";
+import dbConnect from "@/utils/dbConnect";
 
 const spellCorrector = new SpellCorrector();
 spellCorrector.loadDictionary();

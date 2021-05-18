@@ -5,7 +5,7 @@
         "module": "commonjs",
         "outDir": "./dist/",
         "noEmit": false,
-        "rootDir": "./",
+        "rootDir": "../",
         "moduleResolution": "node"
     },
     "include": ["./server.ts"],

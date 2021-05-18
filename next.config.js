@@ -45,6 +45,7 @@ module.exports = {
             "vercel.com",
             // below are arbitrary links for random images
             "res.couldinary.com",
+            "img.icons8.com",
         ],
     },
     // async redirects() {

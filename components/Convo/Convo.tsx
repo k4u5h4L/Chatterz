@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import { useSession } from "next-auth/client";
 import Router from "next/router";
+import Image from "next/image";
+
 // import { gql, useLazyQuery } from "@apollo/client";
 
 import { useSocket } from "@/utils/useSocket";
@@ -17,6 +19,10 @@ import { useSocket } from "@/utils/useSocket";
 //         }
 //     }
 // `;
+
+const ANGRY = "/emojis/angry.svg";
+const NEUTRAL = "/emojis/neutral.svg";
+const HAPPY = "/emojis/happy.svg";
 
 export default function Convo({ user, query, contact }) {
     const [messages, setMessages] = useState(contact.messages);
@@ -196,7 +202,7 @@ export default function Convo({ user, query, contact }) {
                                 </div>
                             </div>
 
-                            <div className="col-6 col-xl-8 text-end">
+                            {/* <div className="col-6 col-xl-8 text-end">
                                 <ul className="nav justify-content-end">
                                     <li
                                         className="
@@ -357,12 +363,12 @@ export default function Convo({ user, query, contact }) {
                                         </div>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
 
-                <div className="collapse" id="chat-search-div">
+                {/* <div className="collapse" id="chat-search-div">
                     <div className="container-xxl py-2">
                         <div className="input-group">
                             <input
@@ -424,7 +430,7 @@ export default function Convo({ user, query, contact }) {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="chat-content" id="chatSection">
                     <div className="container-xxl">
@@ -502,7 +508,9 @@ export default function Convo({ user, query, contact }) {
                                                     <div className="message-content p-3">
                                                         {message.content}
                                                     </div>
-                                                    {!message.sentiment ? null : (
+                                                    {!message.sentiment &&
+                                                    message.sentiment !=
+                                                        0 ? null : (
                                                         <div className="dropdown">
                                                             <div
                                                                 className="
@@ -523,11 +531,24 @@ export default function Convo({ user, query, contact }) {
                                                                 aria-haspopup="true"
                                                                 aria-expanded="false"
                                                             >
-                                                                <i
+                                                                {/* <i
                                                                     className="
                                                             zmdi zmdi-more-vert
                                                         "
-                                                                ></i>
+                                                                ></i> */}
+                                                                <Image
+                                                                    src={
+                                                                        message.sentiment ==
+                                                                        0
+                                                                            ? NEUTRAL
+                                                                            : message.sentiment >
+                                                                              0
+                                                                            ? HAPPY
+                                                                            : ANGRY
+                                                                    }
+                                                                    width={40}
+                                                                    height={40}
+                                                                />
                                                             </div>
                                                         </div>
                                                     )}
