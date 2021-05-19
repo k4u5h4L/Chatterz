@@ -16,11 +16,13 @@ const VideoCall = dynamic(() => import("@/components/VideoCall/VideoCall"), {
 import Invite from "@/components/Home/Invite/Invite";
 
 import Chat from "@/models/Chat";
+import dbConnect from "@/utils/dbConnect";
 
 export const getServerSideProps: GetServerSideProps = async ({
     req,
     query,
 }) => {
+    await dbConnect();
     const session = await getSession({ req });
 
     if (!session) {

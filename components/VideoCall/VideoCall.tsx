@@ -7,6 +7,7 @@ import ChatContact from "../ChatContact/ChatContact";
 const callOptions = { video: true, audio: false };
 
 export default function VideoCall({ user, chatId, contact }) {
+    const [disappear, setDisappear] = useState<boolean>(false);
     const peer = new Peer(md5(user.email));
 
     // const optionRef = useRef({ video: true, audio: false });
@@ -20,21 +21,21 @@ export default function VideoCall({ user, chatId, contact }) {
     const myVideoRef: any = useRef();
     const theirVideoRef: any = useRef();
 
-    const conn = peer.connect(theirEmail);
+    // const conn = peer.connect(theirEmail);
 
-    conn.on("open", () => {
-        conn.send("hi!");
-    });
+    // conn.on("open", () => {
+    //     conn.send("hi!");
+    // });
 
-    peer.on("connection", (conn) => {
-        conn.on("data", (data) => {
-            // Will print 'hi!'
-            console.log(data);
-        });
-        conn.on("open", () => {
-            conn.send("hello!");
-        });
-    });
+    // peer.on("connection", (conn) => {
+    //     conn.on("data", (data) => {
+    //         // Will print 'hi!'
+    //         console.log(data);
+    //     });
+    //     conn.on("open", () => {
+    //         conn.send("hello!");
+    //     });
+    // });
 
     const callThem = () => {
         // call
@@ -111,6 +112,39 @@ export default function VideoCall({ user, chatId, contact }) {
                         "
             >
                 <div className="container-xxl">
+                    {!disappear ? (
+                        <div>
+                            <p>
+                                <b>You</b> and/or{" "}
+                                <b>
+                                    {contact.members[0].email != user.email
+                                        ? contact.members[0].name
+                                        : contact.members[1].name}
+                                </b>{" "}
+                                needs to click on this button to be able to
+                                connect. It&apos;s not a bug, it&apos;s a
+                                feature!
+                            </p>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                onClick={() => {
+                                    callThem();
+                                    setDisappear((prevVal) => !prevVal);
+                                }}
+                            >
+                                <span
+                                    className="
+                                                            d-none
+                                                            d-md-inline-block
+                                                            me-2
+                                                        "
+                                >
+                                    Answer
+                                </span>
+                            </button>
+                        </div>
+                    ) : null}
                     <div
                         className="
                                     video-div
@@ -211,26 +245,6 @@ export default function VideoCall({ user, chatId, contact }) {
                             className="img-fluid rounded"
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        onClick={() => callThem()}
-                    >
-                        <span
-                            className="
-                                                            d-none
-                                                            d-md-inline-block
-                                                            me-2
-                                                        "
-                        >
-                            Answer
-                        </span>
-                    </button>
-                    <p>
-                        Both you and the person you&apos;re calling needs to
-                        click on this button to be able to connect. It&apos;s
-                        not a bug, it&apos;s a feature!
-                    </p>
                 </div>
             </div>
         </div>
