@@ -440,6 +440,7 @@ export default function Sidebar() {
                                                     overflow-hidden
                                                 "
                                                       >
+                                                          {/* prettier-ignore */}
                                                           <div
                                                               className="
                                                         d-flex
@@ -461,6 +462,7 @@ export default function Sidebar() {
                                                                       .name
                                                                       ? // @ts-ignore
                                                                         chat
+                                                                        // @ts-ignore
                                                                             .members[1]
                                                                             .name
                                                                       : chat
@@ -487,6 +489,7 @@ export default function Sidebar() {
                                                                       11:08 am
                                                                   </p> */}
                                                           </div>
+                                                          {/* prettier-ignore */}
                                                           <div className="text-truncate">
                                                               {/* <i
                                                                       className="
@@ -503,6 +506,7 @@ export default function Sidebar() {
                                                               session.user.email
                                                                   ? // @ts-ignore
                                                                     chat
+                                                                    // @ts-ignore
                                                                         .members[1]
                                                                         .email
                                                                   : chat

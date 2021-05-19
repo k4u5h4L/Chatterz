@@ -37,6 +37,10 @@
 
 -   [x] Real time one-to-one messaging
 
+-   [x] Messages sync: saves and let's you chat using any device!
+
+-   [x] Automatic real-time sentiment recognition of the messages of the other person
+
 -   [x] Integrated calendar inside the messaging app
 
 -   [x] Integrated notes saving in the chats
