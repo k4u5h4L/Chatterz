@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Peer from "peerjs";
 import md5 from "md5";
+import { useRouter } from "next/router";
 
 import ChatContact from "../ChatContact/ChatContact";
 
@@ -8,7 +9,11 @@ const callOptions = { video: true, audio: false };
 
 export default function VideoCall({ user, chatId, contact }) {
     const [disappear, setDisappear] = useState<boolean>(false);
+    const [audioIcon, setAudioIcon] = useState<boolean>(true);
+    const [videoIcon, setVideoIcon] = useState<boolean>(true);
+    const vidStream: any = useRef();
     const peer = new Peer(md5(user.email));
+    const router = useRouter();
 
     // const optionRef = useRef({ video: true, audio: false });
 
@@ -53,10 +58,27 @@ export default function VideoCall({ user, chatId, contact }) {
                     // Show stream in some <video> element.
                     console.log("streaming now! calling");
 
+                    vidStream.current = remoteStream;
+                    console.log(vidStream.current);
+
                     theirVideoRef.current.srcObject = remoteStream;
                 });
             })
             .catch((err) => console.error("Failed to get local stream", err));
+    };
+
+    const toggleAudio = () => {
+        setAudioIcon((prevVal) => !prevVal);
+
+        vidStream.current.getVideoTracks()[0].enabled =
+            !vidStream.current.getVideoTracks()[0].enabled;
+    };
+
+    const toggleVideo = () => {
+        setVideoIcon((prevVal) => !prevVal);
+
+        vidStream.current.getAudioTracks()[0].enabled =
+            !vidStream.current.getAudioTracks()[0].enabled;
     };
 
     useEffect(() => {
@@ -78,6 +100,8 @@ export default function VideoCall({ user, chatId, contact }) {
                     call.on("stream", (remoteStream) => {
                         // Show stream in some <video> element.
                         console.log("streaming now! answering");
+                        vidStream.current = remoteStream;
+                        console.log(vidStream.current);
                         theirVideoRef.current.srcObject = remoteStream;
                     });
                 })
@@ -89,6 +113,8 @@ export default function VideoCall({ user, chatId, contact }) {
 
     const disconnectFromCall = () => {
         peer.destroy();
+
+        router.push("/");
     };
 
     return (
@@ -165,18 +191,17 @@ export default function VideoCall({ user, chatId, contact }) {
                                 className="btn btn-sm btn-default"
                                 data-toggle="tooltip"
                                 title="Mute"
+                                onClick={() => toggleAudio()}
                             >
-                                <i className="zmdi zmdi-mic-off"></i>
+                                <i
+                                    className={
+                                        audioIcon
+                                            ? "zmdi zmdi-mic"
+                                            : "zmdi zmdi-mic-off"
+                                    }
+                                ></i>
                             </button>
 
-                            {/* <button
-                                type="submit"
-                                className="btn btn-sm btn-default"
-                                data-toggle="tooltip"
-                                title="Call Recording"
-                            >
-                                <i className="zmdi zmdi-dot-circle"></i>
-                            </button> */}
                             <button
                                 type="button"
                                 className="btn btn-sm btn-danger"
@@ -191,8 +216,15 @@ export default function VideoCall({ user, chatId, contact }) {
                                 className="btn btn-sm btn-default"
                                 data-toggle="tooltip"
                                 title="Video off"
+                                onClick={() => toggleVideo()}
                             >
-                                <i className="zmdi zmdi-videocam-off"></i>
+                                <i
+                                    className={
+                                        videoIcon
+                                            ? "zmdi zmdi-videocam"
+                                            : "zmdi zmdi-videocam-off"
+                                    }
+                                ></i>
                             </button>
                             {/* <button
                                 type="submit"
