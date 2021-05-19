@@ -3,10 +3,12 @@ import { Socket } from "socket.io-client";
 import { useSession } from "next-auth/client";
 import Router from "next/router";
 import Image from "next/image";
+import Link from "next/link";
 
 // import { gql, useLazyQuery } from "@apollo/client";
 
 import { useSocket } from "@/utils/useSocket";
+import ChatContact from "../ChatContact/ChatContact";
 
 // const GET_CHAT = gql`
 //     query GetChat($chatId: ID!) {
@@ -116,11 +118,6 @@ export default function Convo({ user, query, contact }) {
     useEffect(() => {
         Router.events.on("routeChangeComplete", (url) => {
             setMessages([]);
-            messageRef.current = "";
-
-            // @ts-ignore
-            inputRef.current.value = "";
-
             Router.reload();
         });
     }, []);
@@ -163,46 +160,9 @@ export default function Convo({ user, query, contact }) {
                 <div className="chat-header border-bottom py-xl-4 py-md-3 py-2">
                     <div className="container-xxl">
                         <div className="row align-items-center">
-                            <div className="col-6 col-xl-4">
-                                <div className="media">
-                                    <div className="me-3 show-user-detail">
-                                        <span className="status rounded-circle"></span>
-                                        <img
-                                            className="avatar rounded-circle"
-                                            src="/assets/images/xs/avatar5.jpg"
-                                            alt="avatar"
-                                        />
-                                    </div>
-                                    <div className="media-body overflow-hidden">
-                                        <div
-                                            className="
-                                                    d-flex
-                                                    align-items-center
-                                                    mb-1
-                                                "
-                                        >
-                                            <h6
-                                                className="
-                                                        text-truncate
-                                                        mb-0
-                                                        me-auto
-                                                    "
-                                            >
-                                                {/* {data ? usersRef.current : null} */}
-                                                {contact.members[0].name ==
-                                                user.name
-                                                    ? contact.members[1].name
-                                                    : contact.members[0].name}
-                                            </h6>
-                                        </div>
-                                        <div className="text-truncate">
-                                            online
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <ChatContact user={user} contact={contact} />
 
-                            {/* <div className="col-6 col-xl-8 text-end">
+                            <div className="col-6 col-xl-8 text-end">
                                 <ul className="nav justify-content-end">
                                     <li
                                         className="
@@ -237,21 +197,22 @@ export default function Convo({ user, query, contact }) {
                                                 me-3
                                             "
                                     >
-                                        <a
-                                            href="#"
-                                            className="nav-link text-muted px-3"
-                                            title="videocam"
-                                        >
-                                            <i
-                                                className="
+                                        <Link href={`/video/${chatRoomId}`}>
+                                            <a
+                                                className="nav-link text-muted px-3"
+                                                title="videocam"
+                                            >
+                                                <i
+                                                    className="
                                                         zmdi
                                                         zmdi-videocam
                                                         zmdi-hc-lg
                                                     "
-                                            ></i>
-                                        </a>
+                                                ></i>
+                                            </a>
+                                        </Link>
                                     </li>
-                                    <li
+                                    {/* <li
                                         className="
                                                 nav-item
                                                 list-inline-item
@@ -272,8 +233,8 @@ export default function Convo({ user, query, contact }) {
                                                     "
                                             ></i>
                                         </a>
-                                    </li>
-                                    <li
+                                    </li> */}
+                                    {/* <li
                                         className="
                                                 nav-item
                                                 list-inline-item
@@ -293,7 +254,7 @@ export default function Convo({ user, query, contact }) {
                                                     "
                                             ></i>
                                         </a>
-                                    </li>
+                                    </li> */}
 
                                     <li
                                         className="
@@ -335,19 +296,19 @@ export default function Convo({ user, query, contact }) {
                                                 >
                                                     Search chat
                                                 </a>
-                                                <a
+                                                {/* <a
                                                     className="dropdown-item"
                                                     href="#"
                                                 >
                                                     Attache Image
-                                                </a>
+                                                </a> */}
                                                 <a
                                                     className="dropdown-item"
                                                     href="#"
                                                 >
                                                     Video call
                                                 </a>
-                                                <a
+                                                {/* <a
                                                     className="dropdown-item"
                                                     href="#"
                                                 >
@@ -358,17 +319,17 @@ export default function Convo({ user, query, contact }) {
                                                     href="#"
                                                 >
                                                     Add New
-                                                </a>
+                                                </a> */}
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* <div className="collapse" id="chat-search-div">
+                <div className="collapse" id="chat-search-div">
                     <div className="container-xxl py-2">
                         <div className="input-group">
                             <input
@@ -430,7 +391,7 @@ export default function Convo({ user, query, contact }) {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
                 <div className="chat-content" id="chatSection">
                     <div className="container-xxl">
@@ -702,7 +663,7 @@ export default function Convo({ user, query, contact }) {
                 </div>
             </div>
 
-            <div className="user-detail-sidebar py-xl-4 py-3 px-xl-4 px-3">
+            {/* <div className="user-detail-sidebar py-xl-4 py-3 px-xl-4 px-3">
                 <div className="d-flex flex-column">
                     <div
                         className="
@@ -1526,8 +1487,8 @@ export default function Convo({ user, query, contact }) {
                             </li>
                         </ul>
                     </div>
-                </div>
-            </div>
+                </div> 
+            </div> */}
         </div>
     );
 }

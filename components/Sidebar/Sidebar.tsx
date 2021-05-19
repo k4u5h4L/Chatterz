@@ -395,7 +395,7 @@ export default function Sidebar() {
                             ? chats.map((chat: ChatType, index: number) => (
                                   <li key={index}>
                                       <div className="hover_action">
-                                          <button
+                                          {/* <button
                                               type="button"
                                               className="btn btn-link text-info"
                                           >
@@ -406,13 +406,14 @@ export default function Sidebar() {
                                               className="btn btn-link text-warning"
                                           >
                                               <i className="zmdi zmdi-star"></i>
-                                          </button>
-                                          <button
+                                          </button> */}
+
+                                          {/* <button
                                               type="button"
                                               className="btn btn-link text-danger"
                                           >
                                               <i className="zmdi zmdi-delete"></i>
-                                          </button>
+                                          </button> */}
                                       </div>
                                       <Link href={`/chat/${chat.chatId}`}>
                                           <a className="card">
